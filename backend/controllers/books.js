@@ -4,7 +4,6 @@ const Book = require('../models/Books');
 // Fetch books from the Gutenberg API and store them in the database
 const fetchBooks = async (req, res) => {
   try {
-    // Fetch books from the Gutenberg API
     const response = await axios.get('https://gutendex.com/books');
 
     if (!response.data || !response.data.results) {
@@ -15,42 +14,37 @@ const fetchBooks = async (req, res) => {
     const booksToSave = [];
 
     for (const book of booksData) {
-      // Check if book already exists in the database (using title and author)
       const existingBook = await Book.findOne({
         title: book.title,
         author: book.authors && book.authors.length > 0 ? book.authors[0].name : 'Unknown Author',
       });
 
       if (!existingBook) {
-        // Extract genre from bookshelves (only text after "Browsing: ")
         let genre = 'Unknown';
         if (book.bookshelves && book.bookshelves.length > 0) {
           const browsingGenres = book.bookshelves
-            .filter((shelf) => shelf.toLowerCase().startsWith('browsing: ')) // Ensure filtering is case-insensitive
-            .map((shelf) => shelf.replace(/(?:)^Browsing: /, '').trim()); // Remove "Browsing: " case-insensitively
+            .filter((shelf) => shelf.toLowerCase().startsWith('browsing: '))
+            .map((shelf) => shelf.replace(/(?:)^Browsing: /, '').trim());
           genre = browsingGenres.length > 0 ? browsingGenres[0] : 'Unknown';
         }
 
         const bookData = {
           title: book.title || 'Unknown Title',
           author: book.authors && book.authors.length > 0 ? book.authors[0].name : 'Unknown Author',
-          genre: genre, // Extracted genre only if "Browsing:" is present
-          totalPages: Math.floor(Math.random() * (300 - 200 + 1)) + 200, // Random pages (200-300)
-          coverImage: book.formats && book.formats['image/jpeg']
-            ? book.formats['image/jpeg']
-            : null,
-          summary: book.summaries && book.summaries.length > 0 ? book.summaries[0] : 'No summary available', // Extracting summary
+          genre: genre,
+          totalPages: Math.floor(Math.random() * (300 - 200 + 1)) + 200,
+          coverImage: book.formats && book.formats['image/jpeg'] ? book.formats['image/jpeg'] : null,
+          summary: book.summaries && book.summaries.length > 0 ? book.summaries[0] : 'No summary available',
+          averageRating: 0, // Initialize averageRating
         };
         booksToSave.push(bookData);
       }
     }
 
-    // Save new books to the database
     if (booksToSave.length > 0) {
       await Book.insertMany(booksToSave);
     }
 
-    // Fetch all books from the database
     const allBooks = await Book.find();
     res.status(200).json(allBooks);
   } catch (error) {
@@ -84,8 +78,52 @@ const getBookById = async (req, res) => {
   }
 };
 
+// Add a review to a book
+const addReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reviewerName, rating, comment } = req.body;
+
+    // Validate input
+    if (!reviewerName || !rating) {
+      return res.status(400).json({ message: 'Reviewer name and rating are required' });
+    }
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
+    }
+
+    // Find the book
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    // Add the new review
+    book.reviews.push({
+      reviewerName,
+      rating,
+      comment: comment || '',
+      date: new Date(),
+    });
+
+    // Calculate average rating
+    const totalRatings = book.reviews.length;
+    const sumRatings = book.reviews.reduce((sum, review) => sum + review.rating, 0);
+    book.averageRating = totalRatings > 0 ? Number((sumRatings / totalRatings).toFixed(1)) : 0;
+
+    // Save the updated book
+    await book.save();
+
+    res.status(200).json({ message: 'Review added successfully', book });
+  } catch (error) {
+    console.error('Error in addReview:', error.message);
+    res.status(500).json({ message: 'Error adding review', error: error.message });
+  }
+};
+
 module.exports = {
   fetchBooks,
   getAllBooks,
   getBookById,
+  addReview,
 };

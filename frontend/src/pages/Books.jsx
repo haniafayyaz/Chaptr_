@@ -63,9 +63,6 @@ const Books = () => {
                 <div className="book-info">
                   <h2 className="book-name">{book.title}</h2>
                   <p className="book-writer">{book.author}</p>
-                  <div className="book-score">
-                    {'★★★★★'} {book.rating || '5.0'}
-                  </div>
                   <p className="book-category">{book.genre}</p>
                   <div className="separator"></div>
                   <button
