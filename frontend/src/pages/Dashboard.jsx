@@ -30,7 +30,6 @@ const Dashboard = () => {
         setUser(parsedUser);
         
         try {
-          // Fetch reading list
           const apiUrl = process.env.NODE_ENV === 'development'
             ? `http://localhost:5000/api/reading-list/get-reading-list/${parsedUser.username}`
             : `/api/reading-list/get-reading-list/${parsedUser.username}`;
@@ -42,31 +41,29 @@ const Dashboard = () => {
               ? readingListRes.data.books
               : [];
   
-          // Fetch all books to get total pages
           const booksUrl = process.env.NODE_ENV === 'development'
             ? 'http://localhost:5000/api/books'
             : '/api/books';
           const booksRes = await axios.get(booksUrl);
           const booksData = booksRes.data;
   
-          // Create a map of bookId to totalPages
           const bookPagesMap = new Map();
           booksData.forEach(book => {
-            bookPagesMap.set(book._id, book.totalPages || 0); // Use totalPages from /api/books
+            bookPagesMap.set(book._id, book.totalPages || 0);
           });
   
           const readingBooks = readingListData
             .filter(book => book.status === 'reading')
             .map(book => ({
               id: book.bookId,
-              readingListId: book._id, // Store reading list _id
+              readingListId: book._id,
               title: book.bookTitle,
               author: book.bookAuthor,
               coverImage: book.coverImage,
               progress: book.pagesRead && bookPagesMap.get(book.bookId) && bookPagesMap.get(book.bookId) > 0
                 ? Math.round((book.pagesRead / bookPagesMap.get(book.bookId)) * 100)
                 : 0,
-              totalPages: bookPagesMap.get(book.bookId) || book.totalPages || 0, // Prefer API data
+              totalPages: bookPagesMap.get(book.bookId) || book.totalPages || 0,
               pagesRead: book.pagesRead || 0
             }));
   
@@ -74,7 +71,7 @@ const Dashboard = () => {
             .filter(book => book.status === 'wantToRead')
             .map(book => ({
               id: book.bookId,
-              readingListId: book._id, // Store reading list _id
+              readingListId: book._id,
               title: book.bookTitle,
               author: book.bookAuthor,
               coverImage: book.coverImage,
@@ -133,8 +130,6 @@ const Dashboard = () => {
         pagesRead: newPagesRead
       });
   
-      console.log('Progress Update Response:', response.data);
-  
       setBooks(prev => {
         const updatedReading = prev.reading.map(book => 
           book.id === currentBook.id 
@@ -173,7 +168,6 @@ const Dashboard = () => {
         throw new Error("Book not found in Want to Read list");
       }
   
-      // Update status using the same endpoint as progress updates
       const updateUrl = process.env.NODE_ENV === 'development'
         ? 'http://localhost:5000/api/reading-list/update-progress'
         : '/api/reading-list/update-progress';
@@ -181,12 +175,9 @@ const Dashboard = () => {
         username: user.username,
         bookId: bookId,
         status: 'reading',
-        pagesRead: 0 // Reset pagesRead when starting
+        pagesRead: 0
       });
   
-      console.log('Status Update Response:', response.data);
-  
-      // Update frontend state
       setBooks(prev => {
         const updatedWantToRead = prev.wantToRead.filter(book => book.id !== bookId);
         const updatedReading = [
@@ -209,6 +200,31 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error starting to read book:", error.response?.data || error.message);
       alert(`Failed to start reading the book: ${error.response?.data?.message || error.message}. Please try again.`);
+    }
+  };
+
+  // New function to remove a book
+  const removeBook = async (bookId) => {
+    try {
+      const removeUrl = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:5000/api/reading-list/remove'
+        : '/api/reading-list/remove';
+      const response = await axios.delete(removeUrl, {
+        data: {
+          username: user.username,
+          bookId: bookId
+        }
+      });
+      
+      setBooks(prev => ({
+        ...prev,
+        wantToRead: prev.wantToRead.filter(book => book.id !== bookId)
+      }));
+      
+      console.log('Remove Book Response:', response.data);
+    } catch (error) {
+      console.error("Error removing book:", error.response?.data || error.message);
+      alert(`Failed to remove the book: ${error.response?.data?.message || error.message}. Please try again.`);
     }
   };
 
@@ -357,12 +373,20 @@ const Dashboard = () => {
                   <div className="reading-info">
                     <h4>{book.title || 'Untitled'}</h4>
                     <p>{book.author || 'Unknown Author'}</p>
-                    <button 
-                      onClick={() => startReading(book.id)} 
-                      className="begin-btn"
-                    >
-                      Start Reading
-                    </button>
+                    <div className="button-group">
+                      <button 
+                        onClick={() => startReading(book.id)} 
+                        className="begin-btn"
+                      >
+                        Start Reading
+                      </button>
+                      <button 
+                        onClick={() => removeBook(book.id)} 
+                        className="begin-btn"
+                      >
+                        Remove Book
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))
