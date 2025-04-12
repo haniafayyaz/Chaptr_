@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Add useNavigate
 import "../styles/bookClubs.css";
 import "../styles/navbar.css";
 
@@ -19,7 +19,7 @@ const Clubs = () => {
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(null);
 
-  // Backend base URL
+  const navigate = useNavigate(); // For navigation
   const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
@@ -73,8 +73,57 @@ const Clubs = () => {
     });
   };
 
-  const handleViewClub = (clubId) => {
-    window.location.href = `/club/${clubId}`;
+  const handleClubAction = async (clubId) => {
+    if (activeTab === "myClubs") {
+      // Navigate to club page for "View Club"
+      navigate(`/club/${clubId}`);
+    } else {
+      // Handle join club for "Discover" tab
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user || !user.username) {
+          throw new Error("User not logged in");
+        }
+
+        const response = await fetch(`${BASE_URL}/api/clubs/${clubId}/join`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: user.username }),
+        });
+
+        const text = await response.text();
+        if (!response.ok) {
+          let errorMessage = "Failed to join club";
+          try {
+            const errorData = JSON.parse(text);
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            errorMessage = "An unexpected error occurred";
+          }
+          alert(errorMessage);
+          return;
+        }
+
+        const updatedClub = JSON.parse(text);
+        setClubs((prev) =>
+          prev.map((club) =>
+            club._id === clubId ? updatedClub : club
+          )
+        );
+        setFilteredClubs((prev) =>
+          prev.map((club) =>
+            club._id === clubId ? updatedClub : club
+          )
+        );
+        setFormSuccess("Successfully joined the club!");
+        setTimeout(() => setFormSuccess(null), 3000);
+      } catch (err) {
+        alert(err.message);
+        console.error("Join club error:", err);
+      }
+    }
   };
 
   const handleFormChange = (e) => {
@@ -114,12 +163,11 @@ const Clubs = () => {
       data.append("tags", formData.tags);
       data.append("coverImage", formData.coverImage);
 
-      // Retrieve user from localStorage
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user || !user.username) {
         throw new Error("User not found or username missing in localStorage");
       }
-      data.append("username", user.username); // Append username to FormData
+      data.append("username", user.username);
 
       const response = await fetch(`${BASE_URL}/api/clubs`, {
         method: "POST",
@@ -173,7 +221,7 @@ const Clubs = () => {
             club.members.includes(user.username)
         )
       : filteredClubs;
-      
+
   return (
     <div className="dash-wrapper">
       <div className="side-panel">
@@ -311,9 +359,9 @@ const Clubs = () => {
                     </div>
                     <button
                       className="view-club-btn"
-                      onClick={() => handleViewClub(club._id)}
+                      onClick={() => handleClubAction(club._id)}
                     >
-                      View Club
+                      {activeTab === "myClubs" ? "View Club" : "Join Club"}
                     </button>
                   </div>
                 ))}

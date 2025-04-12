@@ -24,6 +24,7 @@ app.use("/api/clubs", bookClubRoutes); // Book Club Routes
 // Serve Frontend (Fixes 404 on Refresh)
 const clientBuildPath = path.join(__dirname, "client", "build");
 app.use(express.static(clientBuildPath));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Handle React Router Paths (Fixes 404 on Refresh)
 app.get("*", (req, res) => {

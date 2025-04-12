@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books"; 
 import BookDetails from './pages/BookDetails';
 import BookClub from './pages/BookClub';
+import ClubPage from './pages/ClubPosts';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/books" element={<Books />} />
         <Route path="/book/:id" element={<BookDetails />} />
         <Route path="/clubs" element={<BookClub />} />
+        <Route path="/club/:clubId" element={<ClubPage />} />
       </Routes>
     </Router>
   );
