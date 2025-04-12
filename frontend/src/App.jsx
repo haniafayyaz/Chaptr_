@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books"; 
 import BookDetails from './pages/BookDetails';
 
+import BookClub from './pages/BookClub';
+
 function App() {
   return (
     <Router>
@@ -17,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/books" element={<Books />} />
         <Route path="/book/:id" element={<BookDetails />} />
+        <Route path="/clubs" element={<BookClub />} />
       </Routes>
     </Router>
   );

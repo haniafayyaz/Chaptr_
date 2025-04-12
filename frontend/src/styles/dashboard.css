@@ -190,6 +190,10 @@
 }
 
 /* Buttons - Adjusted to make them less wide */
+<<<<<<< HEAD
+=======
+/* Buttons - Adjusted to make them less wide */
+>>>>>>> 48aab55 (book club frontend)
 .modify-btn, .begin-btn {
   background-color: #3498db;
   color: white;
@@ -199,9 +203,21 @@
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 14px;
+<<<<<<< HEAD
   width: auto; /* Allow the button to size based on content */
   display: inline-block; /* Prevent full-width stretching */
   min-width: 120px; /* Set a minimum width to ensure readability */
+=======
+  width: auto; /* Allow the on content */
+  display: inline-block; /* Prevent full-width stretching */
+  min-width: 120px; /* Set a minimum width to ensure readability */
+  margin-right: 10px; /* Add gap between buttons */
+}
+
+/* Remove margin-right from the last button to avoid extra space */
+.modify-btn:last-child, .begin-btn:last-child {
+  margin-right: 0;
+>>>>>>> 48aab55 (book club frontend)
 }
 
 .modify-btn:hover, .begin-btn:hover {
@@ -344,4 +360,32 @@
 
 .save-btn:hover {
   background-color: #2980b9;
+<<<<<<< HEAD
+=======
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.remove-btn {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.remove-btn:hover {
+  background-color: #cc0000;
+}
+
+.remove-btn:active {
+  background-color: #990000;
+>>>>>>> 48aab55 (book club frontend)
 }

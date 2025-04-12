@@ -5,6 +5,10 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const bookRoutes = require("./routes/bookRoutes");
 const readingListRoutes = require('./routes/readingListRoutes');
+<<<<<<< HEAD
+=======
+const bookClubRoutes = require('./routes/bookClub'); // Book Club Routes
+>>>>>>> 48aab55 (book club frontend)
 const app = express();
 
 // Middleware
@@ -18,6 +22,10 @@ connectDB();
 app.use("/auth", authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/reading-list', readingListRoutes);
+<<<<<<< HEAD
+=======
+app.use("/api/clubs", bookClubRoutes); // Book Club Routes
+>>>>>>> 48aab55 (book club frontend)
 
 // Serve Frontend (Fixes 404 on Refresh)
 const clientBuildPath = path.join(__dirname, "client", "build");

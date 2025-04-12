@@ -94,6 +94,14 @@ const Books = () => {
       </div>
 
       <div className="primary-content">
+<<<<<<< HEAD
+=======
+        <div className="hamburger-menu">
+          <div className="hamburger-line"></div>
+          <div className="hamburger-line"></div>
+          <div className="hamburger-line"></div>
+        </div>
+>>>>>>> 48aab55 (book club frontend)
         <div className="books-wrapper">
           <div className="books-content">
             <h1>Discover Books</h1>
@@ -102,6 +110,10 @@ const Books = () => {
                 value={filterOption}
                 onChange={handleFilterChange}
                 className="filter-dropdown"
+<<<<<<< HEAD
+=======
+                aria-label="Select search filter"
+>>>>>>> 48aab55 (book club frontend)
               >
                 <option value="">Select Filter</option>
                 <option value="author">Author</option>
@@ -116,10 +128,18 @@ const Books = () => {
                     onChange={handleSearchChange}
                     placeholder={`Search by ${filterOption}`}
                     className="search-input"
+<<<<<<< HEAD
+=======
+                    aria-label={`Search books by ${filterOption}`}
+>>>>>>> 48aab55 (book club frontend)
                   />
                   <button
                     onClick={handleClearSearch}
                     className="clear-search-btn"
+<<<<<<< HEAD
+=======
+                    aria-label="Clear search"
+>>>>>>> 48aab55 (book club frontend)
                   >
                     Clear
                   </button>
@@ -145,8 +165,13 @@ const Books = () => {
                     </div>
                     <div className="book-info">
                       <h2 className="book-name">{book.title}</h2>
+<<<<<<< HEAD
                       <p className="book-writer">{book.author}</p>
                       <p className="book-category">{book.genre}</p>
+=======
+                      <span className="book-author">{book.author}</span>
+                      <span className="book-genre">{book.genre}</span>
+>>>>>>> 48aab55 (book club frontend)
                       <div className="separator"></div>
                       <button
                         className="book-info-btn"

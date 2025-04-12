@@ -1,13 +1,25 @@
+<<<<<<< HEAD
 /* books.css */
 .books-wrapper {
   min-height: 100vh;
   background: linear-gradient(135deg, #e6f0fa 0%, #f5f7fa 100%); /* Subtle gradient background */
   padding: 40px 20px;
+=======
+/* styles/books.css */
+
+.books-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e6f0fa 0%, #f5f7fa 100%);
+  padding: 60px 20px 40px; /* Extra top padding for hamburger */
+>>>>>>> 48aab55 (book club frontend)
   position: relative;
   overflow: hidden;
 }
 
+<<<<<<< HEAD
 /* Add a subtle background pattern */
+=======
+>>>>>>> 48aab55 (book club frontend)
 .books-wrapper::before {
   content: '';
   position: absolute;
@@ -16,11 +28,18 @@
   width: 100%;
   height: 100%;
   background: url('https://www.transparenttextures.com/patterns/subtle-white-feathers.png');
+<<<<<<< HEAD
   opacity: 0.1;
   z-index: 0;
 }
 
 /* Container */
+=======
+  opacity: 0.05;
+  z-index: 0;
+}
+
+>>>>>>> 48aab55 (book club frontend)
 .books-content {
   max-width: 1280px;
   margin: 0 auto;
@@ -29,6 +48,7 @@
 }
 
 .books-content h1 {
+<<<<<<< HEAD
   color: #1a3550; /* Darker shade for better contrast */
   font-size: 36px;
   font-weight: 700;
@@ -56,16 +76,124 @@
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+=======
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(to right, #1a3550, #3498db);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Search bar styles */
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+  align-items: center;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.search-bar:hover {
+  transform: translateY(-2px);
+}
+
+.filter-dropdown {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #fafafa;
+  min-width: 180px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter-dropdown:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.search-input-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #fafafa;
+  width: 100%;
+  max-width: 300px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.clear-search-btn {
+  background: linear-gradient(135deg, #e63946, #c82333);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.clear-search-btn:hover {
+  background: linear-gradient(135deg, #c82333, #b31b2b);
+  transform: translateY(-2px);
+}
+
+.books-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  align-items: stretch;
+}
+
+.book-item {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+>>>>>>> 48aab55 (book club frontend)
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   height: 100%;
   position: relative;
+=======
+>>>>>>> 48aab55 (book club frontend)
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .book-item:hover {
+<<<<<<< HEAD
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
@@ -76,6 +204,16 @@
   height: 320px; /* Increased height for better cover display */
   overflow: hidden;
   position: relative;
+=======
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.book-image-wrapper {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+>>>>>>> 48aab55 (book club frontend)
   background-color: #e8ecef;
 }
 
@@ -83,24 +221,36 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+<<<<<<< HEAD
   object-position: center;
   display: block;
+=======
+>>>>>>> 48aab55 (book club frontend)
   transition: transform 0.3s ease;
 }
 
 .book-item:hover .book-image {
+<<<<<<< HEAD
   transform: scale(1.05); /* Subtle zoom effect on hover */
+=======
+  transform: scale(1.05);
+>>>>>>> 48aab55 (book club frontend)
 }
 
 .book-image-fallback {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, #3498db, #2980b9);
+<<<<<<< HEAD
   color: white;
+=======
+  color: #fff;
+>>>>>>> 48aab55 (book club frontend)
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+<<<<<<< HEAD
   padding: 20px;
   font-size: 16px;
   font-weight: 500;
@@ -145,10 +295,34 @@
   overflow: hidden;
   text-overflow: ellipsis;
   /* Standard line-clamp */
+=======
+  font-size: 16px;
+  font-weight: 500;
+  padding: 20px;
+}
+
+.book-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+  align-items: center; /* Center content */
+}
+
+.book-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a3550;
+  margin: 0 0 4px; /* Reduced margin to bring genre closer */
+  line-height: 1.4;
+  text-align: center;
+>>>>>>> 48aab55 (book club frontend)
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
+<<<<<<< HEAD
   transition: color 0.3s ease;
 }
 
@@ -193,24 +367,66 @@
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   border: none;
+=======
+  overflow: hidden;
+  transition: color 0.3s;
+}
+
+.book-item:hover .book-name {
+  color: #3498db;
+}
+
+.book-genre {
+  font-size: 14px;
+  font-weight: 400; /* Less bold */
+  color: #5f6c7b;
+  margin: 0 0 12px;
+  text-align: center;
+  display: block; /* Ensure it’s below title */
+}
+
+.separator {
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #d1d5db, transparent);
+  margin: 12px 0;
+}
+
+.book-info-btn {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+>>>>>>> 48aab55 (book club frontend)
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
+<<<<<<< HEAD
   letter-spacing: 0.5px;
   transition: background 0.3s ease, transform 0.2s ease;
   margin-top: auto;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+=======
+  transition: background 0.3s, transform 0.2s;
+  width: 100%;
+  max-width: 150px;
+>>>>>>> 48aab55 (book club frontend)
 }
 
 .book-info-btn:hover {
   background: linear-gradient(135deg, #2980b9, #1e6a9a);
   transform: translateY(-2px);
+<<<<<<< HEAD
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Loading and Error States */
+=======
+}
+
+>>>>>>> 48aab55 (book club frontend)
 .loader {
   min-height: 100vh;
   display: flex;
@@ -220,7 +436,10 @@
   font-size: 20px;
   font-weight: 500;
   background: #f5f7fa;
+<<<<<<< HEAD
   animation: fadeIn 0.5s ease-in;
+=======
+>>>>>>> 48aab55 (book club frontend)
 }
 
 .error-message {
@@ -232,15 +451,23 @@
   font-size: 20px;
   font-weight: 500;
   background: #f5f7fa;
+<<<<<<< HEAD
   animation: fadeIn 0.5s ease-in;
 }
 
 /* No Books Message */
+=======
+}
+
+>>>>>>> 48aab55 (book club frontend)
 .books-content p {
   text-align: center;
   color: #5f6c7b;
   font-size: 18px;
+<<<<<<< HEAD
   font-weight: 500;
+=======
+>>>>>>> 48aab55 (book club frontend)
   padding: 30px;
   background: #ffffff;
   border-radius: 12px;
@@ -248,6 +475,7 @@
   margin: 20px 0;
 }
 
+<<<<<<< HEAD
 /* Fade-in Animation */
 @keyframes fadeIn {
   from {
@@ -262,6 +490,11 @@
 @media (max-width: 768px) {
   .books-wrapper {
     padding: 20px 10px;
+=======
+@media (max-width: 768px) {
+  .books-wrapper {
+    padding: 50px 10px 20px;
+>>>>>>> 48aab55 (book club frontend)
   }
 
   .books-content h1 {
@@ -269,17 +502,47 @@
     margin-bottom: 30px;
   }
 
+<<<<<<< HEAD
   .books-layout {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+=======
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  .filter-dropdown,
+  .search-input {
+    min-width: 100%;
+  }
+
+  .search-input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .clear-search-btn {
+    width: 100%;
+  }
+
+  .books-layout {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+>>>>>>> 48aab55 (book club frontend)
     gap: 20px;
   }
 
   .book-image-wrapper {
+<<<<<<< HEAD
     height: 260px;
+=======
+    height: 240px;
+>>>>>>> 48aab55 (book club frontend)
   }
 
   .book-name {
     font-size: 16px;
+<<<<<<< HEAD
     max-height: 2.6em;
   }
 
@@ -473,4 +736,20 @@
   padding: 20px;
   color: red;
   font-size: 16px;
+=======
+  }
+
+  .book-genre {
+    font-size: 13px;
+  }
+}
+
+.book-author {
+  font-size: 16px; /* Increased from 14px to 16px */
+  font-weight: 500; /* Increased from 400 to 500 */
+  color: #272424;
+  margin: 0 0 4px;
+  text-align: center;
+  display: block;
+>>>>>>> 48aab55 (book club frontend)
 }
