@@ -7,7 +7,7 @@ const Dashboard = () => {
   const [books, setBooks] = useState({
     reading: [],
     wantToRead: [],
-    completed: [] // Added to store completed books (optional, see note below)
+    completed: []
   });
   const [stats, setStats] = useState({
     booksRead: 0,
@@ -46,9 +46,27 @@ const Dashboard = () => {
         return;
       }
 
-      setUser(parsedUser);
-      
       try {
+        // Fetch user profile from backend
+        const profileUrl = process.env.NODE_ENV === 'development'
+          ? `http://localhost:5000/api/profile/${parsedUser.username}`
+          : `/api/profile/${parsedUser.username}`;
+        const profileRes = await axios.get(profileUrl, {
+          headers: { Authorization: `Bearer ${parsedUser.token}` }
+        });
+
+        const updatedUser = {
+          ...parsedUser,
+          name: profileRes.data.name,
+          username: profileRes.data.username,
+          email: profileRes.data.email,
+          profilePicture: profileRes.data.profilePicture || null,
+          bio: profileRes.data.bio || null
+        };
+
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+
         // Fetch reading list
         const apiUrl = process.env.NODE_ENV === 'development'
           ? `http://localhost:5000/api/reading-list/get-reading-list/${parsedUser.username}`
@@ -202,7 +220,7 @@ const Dashboard = () => {
 
   const handleProgressUpdate = async () => {
     if (!pagesInput || isNaN(pagesInput)) return;
-  
+    
     const pagesNum = parseInt(pagesInput);
     const newPagesRead = currentBook.pagesRead + pagesNum;
     const newProgress = currentBook.totalPages > 0 
@@ -436,7 +454,13 @@ const Dashboard = () => {
             onMouseEnter={() => setShowProfileMenu(true)}
             onMouseLeave={() => setShowProfileMenu(false)}
           >
-            {user.name?.split(' ').map(n => n[0]).join('')}
+            {user.profilePicture ? (
+              <img src={user.profilePicture} alt="Profile" className="profile-picture" />
+            ) : (
+              <div className="initials-avatar">
+                {user.name?.split(' ').map(n => n[0]).join('')}
+              </div>
+            )}
             {showProfileMenu && (
               <div className="profile-menu">
                 <Link to="/profile" className="profile-menu-item">Profile</Link>
@@ -580,7 +604,6 @@ const Dashboard = () => {
             )}
           </div>
 
-          {/* Optional: Completed Books Section */}
           <div className="reading-group">
             <h3>Completed Books</h3>
             {books.completed.length > 0 ? (
@@ -593,7 +616,7 @@ const Dashboard = () => {
                     <h4>{book.title}</h4>
                     <p>{book.author}</p>
                     <p className="page-count">
-                      Completed: {book.totalPages} of {book.totalPages} pages
+                      Completed: {book.pagesRead} of {book.totalPages} pages
                     </p>
                   </div>
                 </div>

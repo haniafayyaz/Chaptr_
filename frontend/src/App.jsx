@@ -11,6 +11,7 @@ import Books from './pages/Books';
 import BookDetails from './pages/BookDetails';
 import BookClub from './pages/BookClub';
 import ClubPage from './pages/ClubPosts';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -52,6 +53,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <BookClub />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
