@@ -84,12 +84,12 @@ const Books = () => {
   return (
     <div className="dash-wrapper">
       <div className="side-panel">
-        <h1 className="brand-title">BookTrack</h1>
+        <h1 className="brand-title">Chaptr</h1>
         <nav className="navigation">
-          <Link to="/dashboard" className="nav-link">My Books</Link>
-          <Link to="/clubs" className="nav-link">Book Clubs</Link>
+          <Link to="/dashboard" className="nav-link">Dashboard</Link>
+          <Link to="/clubs" className="nav-link active">Book Clubs</Link>
           <Link to="/challenges" className="nav-link">Challenges</Link>
-          <Link to="/books" className="nav-link active">Discover</Link>
+          <Link to="/books" className="nav-link">Discover</Link>
         </nav>
       </div>
 

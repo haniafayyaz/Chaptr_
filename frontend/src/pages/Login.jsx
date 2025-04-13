@@ -1,49 +1,50 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
-import axios from "axios"; // Import axios
-import "../styles/login.css"; // Ensure correct import
+// src/pages/Login.js
+import React, { useState, useContext } from 'react'; // Add useContext
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../styles/login.css';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // Use useNavigate for redirecting after login
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext); // Use context to get login function
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
-      setError("Please fill in all fields");
+      setError('Please fill in all fields');
       return;
     }
 
-    setLoading(true); // Set loading to true while making the request
+    setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/auth/login", {
+      const response = await axios.post('http://localhost:5000/auth/login', {
         email,
         password,
       });
 
-      // If login is successful, handle the response (you can store the token, for example)
-      alert("Login successful!");
+      alert('Login successful!');
 
-      // Store the token in localStorage (or you could store it in state or a context)
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user)); // Store user data if needed
+      // Store in localStorage with keys matching AuthContext
+      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
 
-      console.log(localStorage.getItem('user'));
+      // Update AuthContext
+      login(response.data.token, response.data.user);
 
-      // Redirect to a different page (e.g., dashboard, home) after successful login
-      navigate("/dashboard"); // Change to the route you want to navigate to after login
-
+      navigate('/dashboard');
     } catch (error) {
-      setError(error.response ? error.response.data.message : "Server error. Please try again.");
+      setError(error.response ? error.response.data.message : 'Server error. Please try again.');
     }
 
-    setLoading(false); // Set loading to false after the request is done
+    setLoading(false);
   };
 
   return (
@@ -81,7 +82,7 @@ const Login = () => {
             </div>
 
             <button type="submit" className="button" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
 

@@ -189,15 +189,6 @@
   transition: width 0.3s ease-in-out;
 }
 
-/* Buttons - Adjusted to make them less wide */
-<<<<<<< HEAD
-/* Buttons - Adjusted to make them less wide */
-=======
-<<<<<<< HEAD
-=======
-/* Buttons - Adjusted to make them less wide */
->>>>>>> 48aab55 (book club frontend)
->>>>>>> efa69b53f801dea2deb0628a88dedc38e2984122
 .modify-btn, .begin-btn {
   background-color: #3498db;
   color: white;
@@ -207,14 +198,10 @@
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 14px;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
   width: auto; /* Allow the button to size based on content */
   display: inline-block; /* Prevent full-width stretching */
   min-width: 120px; /* Set a minimum width to ensure readability */
-=======
->>>>>>> efa69b53f801dea2deb0628a88dedc38e2984122
   width: auto; /* Allow the on content */
   display: inline-block; /* Prevent full-width stretching */
   min-width: 120px; /* Set a minimum width to ensure readability */
@@ -224,10 +211,7 @@
 /* Remove margin-right from the last button to avoid extra space */
 .modify-btn:last-child, .begin-btn:last-child {
   margin-right: 0;
-<<<<<<< HEAD
-=======
->>>>>>> 48aab55 (book club frontend)
->>>>>>> efa69b53f801dea2deb0628a88dedc38e2984122
+
 }
 
 .modify-btn:hover, .begin-btn:hover {
@@ -370,11 +354,6 @@
 
 .save-btn:hover {
   background-color: #2980b9;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> efa69b53f801dea2deb0628a88dedc38e2984122
 }
 
 .button-group {
@@ -400,8 +379,36 @@
 
 .remove-btn:active {
   background-color: #990000;
-<<<<<<< HEAD
-=======
->>>>>>> 48aab55 (book club frontend)
->>>>>>> efa69b53f801dea2deb0628a88dedc38e2984122
+}
+
+.profile-icon {
+  position: relative;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-width: 120px;
+  z-index: 100;
+  padding: 8px 0;
+}
+
+.profile-menu-item {
+  display: block;
+  padding: 8px 16px;
+  color: #333;
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-menu-item:hover {
+  background: #f5f5f5;
 }

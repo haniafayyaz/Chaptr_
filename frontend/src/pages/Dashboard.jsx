@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [currentBook, setCurrentBook] = useState(null);
   const [pagesInput, setPagesInput] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -203,7 +204,6 @@ const Dashboard = () => {
     }
   };
 
-  // New function to remove a book
   const removeBook = async (bookId) => {
     try {
       const removeUrl = process.env.NODE_ENV === 'development'
@@ -226,6 +226,11 @@ const Dashboard = () => {
       console.error("Error removing book:", error.response?.data || error.message);
       alert(`Failed to remove the book: ${error.response?.data?.message || error.message}. Please try again.`);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
   };
 
   if (!user) {
@@ -262,9 +267,9 @@ const Dashboard = () => {
       )}
 
       <div className="side-panel">
-        <h1 className="brand-title">BookTrack</h1>
+        <h1 className="brand-title">Chaptr</h1>
         <nav className="navigation">
-          <Link to="/books" className="nav-link active">My Books</Link>
+          <Link to="/books" className="nav-link active">Dashboard</Link>
           <Link to="/clubs" className="nav-link">Book Clubs</Link>
           <Link to="/challenges" className="nav-link">Challenges</Link>
           <Link to="/books" className="nav-link">Discover</Link>
@@ -274,8 +279,23 @@ const Dashboard = () => {
       <div className="primary-content">
         <header className="top-bar">
           <h2>Welcome back, {user.name}!</h2>
-          <div className="profile-icon">
+          <div 
+            className="profile-icon"
+            onMouseEnter={() => setShowProfileMenu(true)}
+            onMouseLeave={() => setShowProfileMenu(false)}
+          >
             {user.name?.split(' ').map(n => n[0]).join('')}
+            {showProfileMenu && (
+              <div className="profile-menu">
+                <Link to="/profile" className="profile-menu-item">Profile</Link>
+                <button 
+                  onClick={handleLogout} 
+                  className="profile-menu-item"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
