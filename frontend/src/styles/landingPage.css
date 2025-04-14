@@ -1,3 +1,4 @@
+
 /* Reset body styles when landing-page is present */
 body:has(.landing-page) {
   display: block;
@@ -98,3 +99,4 @@ body:has(.landing-page) {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(10px); }
 }
+
