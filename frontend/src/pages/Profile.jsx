@@ -8,7 +8,6 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    username: '',
     email: '',
     password: '',
     bio: ''
@@ -34,14 +33,13 @@ const Profile = () => {
         setUser(response.data);
         setFormData({
           name: response.data.name,
-          username: response.data.username,
           email: response.data.email,
           password: '',
           bio: response.data.bio || ''
         });
       } catch (error) {
         console.error('Error fetching profile:', error.response?.data || error.message);
-        setError('Failed to load profile');
+        setError(error.response?.data?.message || 'Failed to load profile');
       }
     };
 
@@ -72,33 +70,61 @@ const Profile = () => {
       const updateUrl = process.env.NODE_ENV === 'development'
         ? 'http://localhost:5000/api/profile/update'
         : '/api/profile/update';
-      await axios.put(updateUrl, formData);
+
+      // Include username from localStorage in the update payload
+      const userData = JSON.parse(localStorage.getItem('user'));
+      const payload = { ...formData, username: userData.username };
+      console.log('Sending update:', payload); // Debug
+      const updateResponse = await axios.put(updateUrl, payload);
+
+      // Update localStorage with data from update response
+      const updatedUserData = {
+        name: updateResponse.data.user.name,
+        username: updateResponse.data.user.username,
+        email: updateResponse.data.user.email,
+        bio: updateResponse.data.user.bio || '',
+        profilePicture: updateResponse.data.user.profilePicture || ''
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUserData));
+      console.log('Updated localStorage:', updatedUserData); // Debug
 
       if (profilePicture) {
         const formDataPicture = new FormData();
         formDataPicture.append('profilePicture', profilePicture);
+        formDataPicture.append('username', userData.username); // Use username from localStorage
         const uploadUrl = process.env.NODE_ENV === 'development'
           ? 'http://localhost:5000/api/profile/upload-picture'
           : '/api/profile/upload-picture';
-        await axios.post(uploadUrl, formDataPicture, {
+        const uploadResponse = await axios.post(uploadUrl, formDataPicture, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
+
+        // Update localStorage with new profile picture
+        updatedUserData.profilePicture = uploadResponse.data.profilePicture;
+        localStorage.setItem('user', JSON.stringify(updatedUserData));
+        console.log('Updated localStorage with profile picture:', updatedUserData); // Debug
       }
 
-      // Update localStorage
-      const updatedUser = {
-        name: formData.name,
-        username: formData.username,
-        email: formData.email,
-        bio: formData.bio,
-        profilePicture: preview || user.profilePicture
-      };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      window.dispatchEvent(new Event('storage')); // Notify dashboard of changes
+      // Refetch user profile to confirm changes
+      const apiUrl = process.env.NODE_ENV === 'development'
+        ? `http://localhost:5000/api/profile/${userData.username}`
+        : `/api/profile/${userData.username}`;
+      const fetchResponse = await axios.get(apiUrl);
+      const fetchedUser = fetchResponse.data;
 
-      setUser({ ...user, ...formData, profilePicture: preview || user.profilePicture });
+      // Update state
+      setUser(fetchedUser);
+      setFormData({
+        name: fetchedUser.name,
+        email: fetchedUser.email,
+        password: '',
+        bio: fetchedUser.bio || ''
+      });
+      window.dispatchEvent(new Event('storage')); // Notify dashboard
+      console.log('Profile updated, state set:', fetchedUser); // Debug
+
       setEditMode(false);
       setProfilePicture(null);
       setPreview(null);
@@ -124,17 +150,25 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-header">
           <h2>{editMode ? 'Edit Profile' : 'My Profile'}</h2>
-          <Link to="/books" className="back-btn">Back to Dashboard</Link>
+          <Link to="/dashboard" className="back-btn">Back to Dashboard</Link>
         </div>
         {error && <p className="error-message">{error}</p>}
-        
+
         <div className={`profile-picture-section ${editMode ? 'edit-mode' : ''}`}>
           {user.profilePicture ? (
-            <img src={preview || user.profilePicture} alt="Profile" className="profile-img" />
+            <img
+              src={
+                preview ||
+                (process.env.NODE_ENV === 'development'
+                  ? `http://localhost:5000${user.profilePicture}`
+                  : user.profilePicture)
+              }
+              alt="Profile"
+              className="profile-img"
+              onError={(e) => console.error('Image load error:', user.profilePicture)}
+            />
           ) : (
-            <div className="initials-avatar">
-              {user.name.split(' ').map(n => n[0]).join('')}
-            </div>
+            <div className="initials-avatar">{user.name.split(' ').map((n) => n[0]).join('')}</div>
           )}
         </div>
 
@@ -150,17 +184,6 @@ const Profile = () => {
                     id="name"
                     name="name"
                     value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={formData.username}
                     onChange={handleInputChange}
                     required
                   />
@@ -227,25 +250,37 @@ const Profile = () => {
 
             <div className="form-actions">
               <button type="submit" className="save-btn">Save Changes</button>
-              <button type="button" onClick={toggleEditMode} className="cancel-btn">Cancel</button>
+              <button type="button" onClick={toggleEditMode} className="cancel-btn">
+                Cancel
+              </button>
             </div>
           </form>
         ) : (
           <div className="profile-details">
             <div className="details-section">
               <h3>Personal Information</h3>
-              <p><strong>Full Name:</strong> {user.name}</p>
-              <p><strong>Username:</strong> {user.username}</p>
+              <p>
+                <strong>Full Name:</strong> {user.name}
+              </p>
+              <p>
+                <strong>Username:</strong> {user.username}
+              </p>
             </div>
             <div className="details-section">
               <h3>Account Details</h3>
-              <p><strong>Email:</strong> {user.email}</p>
+              <p>
+                <strong>Email:</strong> {user.email}
+              </p>
             </div>
             <div className="details-section">
               <h3>About You</h3>
-              <p><strong>Bio:</strong> {user.bio || 'No bio provided'}</p>
+              <p>
+                <strong>Bio:</strong> {user.bio || 'No bio provided'}
+              </p>
             </div>
-            <button onClick={toggleEditMode} className="edit-btn">Edit Profile</button>
+            <button onClick={toggleEditMode} className="edit-btn">
+              Edit Profile
+            </button>
           </div>
         )}
       </div>
