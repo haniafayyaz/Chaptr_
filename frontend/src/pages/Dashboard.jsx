@@ -49,13 +49,10 @@ const Dashboard = () => {
 
       try {
         // Fetch user profile from backend
-        const profileUrl =
-          process.env.NODE_ENV === 'development'
-            ? `http://localhost:5000/api/profile/${parsedUser.username}`
-            : `/api/profile/${parsedUser.username}`;
-        const profileRes = await axios.get(profileUrl, {
-          headers: { Authorization: `Bearer ${parsedUser.token}` },
-        });
+        const profileUrl = process.env.NODE_ENV === 'development'
+          ? `http://localhost:5000/api/profile/${parsedUser.username}`
+          : `/api/profile/${parsedUser.username}`;
+        const profileRes = await axios.get(profileUrl);
 
         const updatedUser = {
           ...parsedUser,
@@ -189,6 +186,17 @@ const Dashboard = () => {
     };
 
     fetchUserData();
+
+    // Listen for storage events to update user data
+    const handleStorageChange = () => {
+      const userData = JSON.parse(localStorage.getItem('user'));
+      if (userData && userData.username) {
+        setUser(userData);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, [navigate]);
 
   const handleUpdateClick = (book) => {
@@ -491,10 +499,13 @@ const Dashboard = () => {
             onMouseLeave={() => setShowProfileMenu(false)}
           >
             {user.profilePicture ? (
-              <img
-                src={user.profilePicture}
-                alt="Profile"
-                className="profile-picture"
+              <img 
+                src={process.env.NODE_ENV === 'development' 
+                  ? `http://localhost:5000${user.profilePicture}` 
+                  : user.profilePicture} 
+                alt="Profile" 
+                className="profile-picture" 
+                onError={(e) => console.error('Dashboard image load error:', user.profilePicture)} // Debug
               />
             ) : (
               <div className="initials-avatar">
