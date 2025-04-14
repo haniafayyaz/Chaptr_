@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/dashboard.css';
 import axios from 'axios';
-import Navbar from '../pages/Navbar'; // Import Navbar component
+import Navbar from '../pages/Navbar';
+import dashtopImage from '../assets/dashtop.png';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Dashboard = () => {
   const [books, setBooks] = useState({
@@ -40,6 +45,13 @@ const Dashboard = () => {
         return;
       }
 
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100,
+      });
+
       const parsedUser = JSON.parse(userData);
       if (!parsedUser || !parsedUser.username) {
         console.error('Invalid user data');
@@ -48,7 +60,6 @@ const Dashboard = () => {
       }
 
       try {
-        // Fetch user profile from backend
         const profileUrl = process.env.NODE_ENV === 'development'
           ? `http://localhost:5000/api/profile/${parsedUser.username}`
           : `/api/profile/${parsedUser.username}`;
@@ -66,7 +77,6 @@ const Dashboard = () => {
         setUser(updatedUser);
         localStorage.setItem('user', JSON.stringify(updatedUser));
 
-        // Fetch reading list
         const apiUrl =
           process.env.NODE_ENV === 'development'
             ? `http://localhost:5000/api/reading-list/get-reading-list/${parsedUser.username}`
@@ -152,7 +162,6 @@ const Dashboard = () => {
           completed: completedBooks,
         });
 
-        // Fetch goal data
         const goalUrl =
           process.env.NODE_ENV === 'development'
             ? `http://localhost:5000/api/goals/${parsedUser.username}`
@@ -187,7 +196,6 @@ const Dashboard = () => {
 
     fetchUserData();
 
-    // Listen for storage events to update user data
     const handleStorageChange = () => {
       const userData = JSON.parse(localStorage.getItem('user'));
       if (userData && userData.username) {
@@ -248,27 +256,27 @@ const Dashboard = () => {
 
   const handleProgressUpdate = async () => {
     if (!pagesInput || isNaN(pagesInput)) return;
-  
+
     const pagesNum = parseInt(pagesInput);
-    const newPagesRead = currentBook.pagesRead + pagesNum;
+    const newPagesRead = Math.min(currentBook.pagesRead + pagesNum, currentBook.totalPages);
     const newProgress = currentBook.totalPages > 0 
       ? Math.round((newPagesRead / currentBook.totalPages) * 100) 
       : 0;
-  
+    const isCompleted = newProgress >= 100;
+
     try {
-      // Update book progress
       const updateUrl = process.env.NODE_ENV === 'development'
         ? 'http://localhost:5000/api/reading-list/update-progress'
         : '/api/reading-list/update-progress';
       const response = await axios.put(updateUrl, {
         username: user.username,
         bookId: currentBook.id,
-        pagesRead: newPagesRead
+        pagesRead: newPagesRead,
+        status: isCompleted ? 'completed' : 'reading',
       });
-  
+
       const updatedBook = response.data.updatedBook;
-  
-      // Update goal progress only if a goal exists
+
       let goalResponse = null;
       if (goal.dailyPagesGoal > 0) {
         const goalUrl = process.env.NODE_ENV === 'development'
@@ -276,41 +284,39 @@ const Dashboard = () => {
           : '/api/goals/update-progress';
         goalResponse = await axios.put(goalUrl, {
           username: user.username,
-          pagesRead: pagesNum
+          pagesRead: pagesNum,
         });
       }
-  
+
       setBooks(prev => {
         let updatedReading = prev.reading;
         let updatedCompleted = prev.completed;
-  
-        if (updatedBook.status === 'completed') {
-          // Remove from reading and add to completed
+
+        if (isCompleted) {
           updatedReading = prev.reading.filter(book => book.id !== currentBook.id);
           updatedCompleted = [
             ...prev.completed,
             {
               ...currentBook,
               pagesRead: newPagesRead,
-              progress: newProgress,
-              status: 'completed'
-            }
+              progress: 100,
+              status: 'completed',
+            },
           ];
         } else {
-          // Update progress in reading
-          updatedReading = prev.reading.map(book => 
+          updatedReading = prev.reading.map(book =>
             book.id === currentBook.id 
               ? { 
                   ...book, 
                   pagesRead: newPagesRead,
-                  progress: newProgress
+                  progress: newProgress,
                 } 
               : book
           );
         }
-  
+
         const totalPagesRead = updatedReading.reduce((total, book) => total + (book.pagesRead || 0), 0);
-  
+
         setStats(prevStats => ({
           ...prevStats,
           pagesRead: totalPagesRead,
@@ -318,26 +324,26 @@ const Dashboard = () => {
             ? Math.round((goalResponse.data.currentProgress / goal.dailyPagesGoal) * 100)
             : prevStats.goalProgress,
           readingStreak: goalResponse ? goalResponse.data.streak : prevStats.readingStreak,
-          booksRead: updatedBook.status === 'completed' 
+          booksRead: isCompleted 
             ? prevStats.booksRead + 1 
-            : prevStats.booksRead
+            : prevStats.booksRead,
         }));
-  
+
         if (goalResponse) {
           setGoal({
             ...goal,
             currentProgress: goalResponse.data.currentProgress,
-            streak: goalResponse.data.streak
+            streak: goalResponse.data.streak,
           });
         }
-  
+
         return {
           ...prev,
           reading: updatedReading,
-          completed: updatedCompleted
+          completed: updatedCompleted,
         };
       });
-  
+
       setShowModal(false);
     } catch (error) {
       console.error("Error updating progress:", error.response?.data || error.message);
@@ -422,21 +428,19 @@ const Dashboard = () => {
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   if (loading) {
-    return <div>Loading your books...</div>;
+    return <div className="loading">Loading your books...</div>;
   }
 
   return (
     <div className="dash-wrapper">
-      {/* Replace static navbar with Navbar component */}
       <Navbar />
-
       {showModal && currentBook && (
         <div className="popup-background">
-          <div className="popup-container">
+          <div className="popup-container" data-aos="zoom-in">
             <h3>Update Progress for {currentBook.title}</h3>
             <p>Current progress: {currentBook.progress}%</p>
             <div className="input-section">
@@ -463,7 +467,7 @@ const Dashboard = () => {
 
       {showGoalModal && (
         <div className="popup-background">
-          <div className="popup-container">
+          <div className="popup-container" data-aos="zoom-in">
             <h3>Set Daily Reading Goal</h3>
             <div className="input-section">
               <label>Pages to read daily:</label>
@@ -491,21 +495,35 @@ const Dashboard = () => {
       )}
 
       <div className="primary-content">
-        <header className="top-bar">
-          <h2>Welcome back, {user.name}!</h2>
+        <div
+          className="dashboard-header"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(${dashtopImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+          data-aos="fade-down"
+        >
+          <div className="dashboard-header-content">
+            <h1>Welcome back, {user.name}!</h1>
+          </div>
           <div
             className="profile-icon"
             onMouseEnter={() => setShowProfileMenu(true)}
             onMouseLeave={() => setShowProfileMenu(false)}
           >
             {user.profilePicture ? (
-              <img 
-                src={process.env.NODE_ENV === 'development' 
-                  ? `http://localhost:5000${user.profilePicture}` 
-                  : user.profilePicture} 
-                alt="Profile" 
-                className="profile-picture" 
-                onError={(e) => console.error('Dashboard image load error:', user.profilePicture)} // Debug
+              <img
+                src={
+                  process.env.NODE_ENV === 'development'
+                    ? `http://localhost:5000${user.profilePicture}`
+                    : user.profilePicture
+                }
+                alt="Profile"
+                className="profile-picture"
+                onError={(e) =>
+                  console.error('Dashboard image load error:', user.profilePicture)
+                }
               />
             ) : (
               <div className="initials-avatar">
@@ -523,54 +541,60 @@ const Dashboard = () => {
               </div>
             )}
           </div>
-        </header>
+        </div>
 
         <div className="metrics-display">
-          <div className="metric-box">
-            <div className="metric-symbol">📚</div>
-            <div className="metric-details">
+          <div className="metric-card" data-aos="fade-up">
+            <div className="metric-icon">📚</div>
+            <div className="metric-content">
               <h3>{stats.booksRead}</h3>
               <p>Books Read</p>
-              <span className="metric-change">+2 from last month</span>
+              <span className="metric-trend">+2 from last month</span>
             </div>
           </div>
 
-          <div className="metric-box">
-            <div className="metric-symbol">📖</div>
-            <div className="metric-details">
+          <div className="metric-card" data-aos="fade-up" data-aos-delay="100">
+            <div className="metric-icon">📖</div>
+            <div className="metric-content">
               <h3>{(stats.pagesRead || 0).toLocaleString()}</h3>
               <p>Pages Read</p>
-              <span className="metric-change">+342 from last month</span>
+              <span className="metric-trend">+342 from last month</span>
             </div>
           </div>
 
-          <div className="metric-box">
-            <div className="metric-symbol">🔥</div>
-            <div className="metric-details">
+          <div className="metric-card" data-aos="fade-up" data-aos-delay="200">
+            <div className="metric-icon">🔥</div>
+            <div className="metric-content">
               <h3>{stats.readingStreak}</h3>
               <p>Goal Streak</p>
-              <span className="metric-change">Keep it up!</span>
+              <span className="metric-trend streak">Keep it up!</span>
             </div>
           </div>
 
-          <div className="metric-box">
-            <div className="metric-symbol">🎯</div>
-            <div className="metric-details">
-              <div className="goal-metrics">
-                <h3>{stats.goalProgress}%</h3>
-                <p className="goal-pages">
-                  {goal.dailyPagesGoal > 0
-                    ? `${goal.currentProgress}/${goal.dailyPagesGoal} pages`
-                    : 'No goal set'}
-                </p>
+          <div
+            className="metric-card goal-card"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div className="metric-icon">🎯</div>
+            <div className="metric-content">
+              <div className="goal-progress">
+                <CircularProgressbar
+                  value={stats.goalProgress > 100 ? 100 : stats.goalProgress}
+                  text={`${stats.goalProgress}%`}
+                  styles={buildStyles({
+                    textSize: '24px',
+                    pathColor: '#6ee7b7',
+                    textColor: '#ffffff',
+                    trailColor: 'rgba(255, 255, 255, 0.1)',
+                  })}
+                />
               </div>
-              <p>Daily Goal Progress</p>
-              <div className="progress-indicator">
-                <div
-                  className="progress-level"
-                  style={{ width: `${stats.goalProgress}%` }}
-                ></div>
-              </div>
+              <p className="goal-pages">
+                {goal.dailyPagesGoal > 0
+                  ? `${goal.currentProgress}/${goal.dailyPagesGoal} pages`
+                  : 'No goal set'}
+              </p>
               <button
                 onClick={() => setShowGoalModal(true)}
                 className="set-goal-btn"
@@ -582,11 +606,16 @@ const Dashboard = () => {
         </div>
 
         <div className="reading-area">
-          <div className="reading-group">
+          <div className="reading-group" data-aos="fade-up">
             <h3>Currently Reading</h3>
             {books.reading.length > 0 ? (
-              books.reading.map((book) => (
-                <div key={book.id} className="reading-item">
+              books.reading.map((book, index) => (
+                <div
+                  key={book.id}
+                  className="reading-item"
+                  data-aos="fade-out"
+                  data-aos-delay={index * 100}
+                >
                   <div
                     className="reading-cover"
                     style={{ backgroundImage: `url(${book.coverImage})` }}
@@ -625,11 +654,16 @@ const Dashboard = () => {
             )}
           </div>
 
-          <div className="reading-group">
+          <div className="reading-group" data-aos="fade-up" data-aos-delay="200">
             <h3>Want to Read</h3>
             {books.wantToRead.length > 0 ? (
-              books.wantToRead.map((book) => (
-                <div key={book.id} className="reading-item">
+              books.wantToRead.map((book, index) => (
+                <div
+                  key={book.id}
+                  className="reading-item"
+                  data-aos="fade-out"
+                  data-aos-delay={index * 100}
+                >
                   <div
                     className="reading-cover"
                     style={{ backgroundImage: `url(${book.coverImage})` }}
@@ -649,7 +683,7 @@ const Dashboard = () => {
                       </button>
                       <button
                         onClick={() => removeBook(book.id)}
-                        className="begin-btn"
+                        className="begin-btn remove-btn"
                       >
                         Remove Book
                       </button>
@@ -662,11 +696,16 @@ const Dashboard = () => {
             )}
           </div>
 
-          <div className="reading-group">
+          <div className="reading-group" data-aos="fade-up" data-aos-delay="400">
             <h3>Completed Books</h3>
             {books.completed.length > 0 ? (
-              books.completed.map((book) => (
-                <div key={book.id} className="reading-item">
+              books.completed.map((book, index) => (
+                <div
+                  key={book.id}
+                  className="reading-item"
+                  data-aos="fade-out"
+                  data-aos-delay={index * 100}
+                >
                   <div
                     className="reading-cover"
                     style={{ backgroundImage: `url(${book.coverImage})` }}
@@ -689,14 +728,14 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="updates-section">
+        <div className="updates-section" data-aos="fade-up">
           <div className="updates-header">
             <h3>Recent Activity</h3>
             <p className="updates-subtitle">Your reading journey</p>
           </div>
 
           <div className="updates-list">
-            <div className="update-entry">
+            <div className="update-entry" data-aos="fade-up" data-aos-delay="100">
               <div className="update-symbol">📖</div>
               <div className="update-info">
                 <h3>Updated progress</h3>
@@ -707,20 +746,21 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="update-entry">
+            <div className="update-entry" data-aos="fade-up" data-aos-delay="200">
               <div className="update-symbol">⭐</div>
               <div className="update-info">
                 <h3>Added to list</h3>
                 <p>
-                  {books.wantToRead[0]?.title || 'New book'} added to want to
-                  read
+                  {books.wantToRead[0]?.title || 'New book'} added to want to read
                 </p>
                 <span className="update-timestamp">Yesterday</span>
               </div>
             </div>
           </div>
 
-          <button className="show-all-btn">View All Activity →</button>
+          <button className="show-all-btn" data-aos="fade-up" data-aos-delay="300">
+            View All Activity →
+          </button>
         </div>
       </div>
     </div>
