@@ -6,10 +6,11 @@ const path = require('path');
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/profile_pictures/'); // Ensure this directory exists
+    cb(null, 'Uploads/'); // Ensure this directory exists
   },
   filename: (req, file, cb) => {
-    cb(null, `${req.user.username}_${Date.now()}${path.extname(file.originalname)}`);
+    const username = req.body.username || 'default'; // Use username from body, fallback to 'default'
+    cb(null, `${username}_${Date.now()}${path.extname(file.originalname)}`);
   }
 });
 
@@ -36,29 +37,25 @@ const getProfile = async (req, res) => {
     }
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Get profile error:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
   }
 };
 
 // Update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { name, username, email, password, bio } = req.body;
-    const user = await User.findOne({ username: req.user.username });
+    const { name, email, password, bio } = req.body;
+    const username = req.body.username; // Get username from auth or session
+
+    // Find user by username
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     // Update fields if provided
     if (name) user.name = name;
-    if (username) {
-      // Check if new username is taken
-      const existingUser = await User.findOne({ username });
-      if (existingUser && existingUser._id.toString() !== user._id.toString()) {
-        return res.status(400).json({ message: 'Username already taken' });
-      }
-      user.username = username;
-    }
     if (email) {
       // Check if new email is taken
       const existingEmail = await User.findOne({ email });
@@ -73,9 +70,10 @@ const updateProfile = async (req, res) => {
     if (bio) user.bio = bio;
 
     await user.save();
-    res.json({ message: 'Profile updated successfully', user: user });
+    res.json({ message: 'Profile updated successfully', user: { ...user.toObject(), password: undefined } });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Update profile error:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
   }
 };
 
@@ -86,17 +84,23 @@ const uploadProfilePicture = (req, res) => {
       return res.status(400).json({ message: err.message });
     }
     try {
-      const user = await User.findOne({ username: req.user.username });
+      const { username } = req.body;
+      if (!username) {
+        return res.status(400).json({ message: 'Username is required' });
+      }
+
+      const user = await User.findOne({ username });
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
 
       // Update profile picture path
-      user.profilePicture = `/uploads/profile_pictures/${req.file.filename}`;
+      user.profilePicture = `/Uploads/${req.file.filename}`;
       await user.save();
       res.json({ message: 'Profile picture updated successfully', profilePicture: user.profilePicture });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      console.error('Upload profile picture error:', error);
+      res.status(500).json({ message: 'Server error: ' + error.message });
     }
   });
 };

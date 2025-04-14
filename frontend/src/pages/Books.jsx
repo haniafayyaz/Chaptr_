@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/books.css';
-import '../styles/navbar.css'; // Import navbar.css for styling
+import Navbar from './Navbar'; // Import the Navbar component
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -83,22 +83,9 @@ const Books = () => {
 
   return (
     <div className="dash-wrapper">
-      <div className="side-panel">
-        <h1 className="brand-title">Chaptr</h1>
-        <nav className="navigation">
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/clubs" className="nav-link active">Book Clubs</Link>
-          <Link to="/challenges" className="nav-link">Challenges</Link>
-          <Link to="/books" className="nav-link">Discover</Link>
-        </nav>
-      </div>
+      <Navbar /> {/* Replace static navbar with Navbar component */}
 
       <div className="primary-content">
-        <div className="hamburger-menu">
-          <div className="hamburger-line"></div>
-          <div className="hamburger-line"></div>
-          <div className="hamburger-line"></div>
-        </div>
         <div className="books-wrapper">
           <div className="books-content">
             <h1>Discover Books</h1>

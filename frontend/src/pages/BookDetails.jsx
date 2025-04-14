@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../styles/bookDetails.css';
-import '../styles/navbar.css';
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -118,97 +117,85 @@ const BookDetails = () => {
   const stars = '★'.repeat(filledStars) + '☆'.repeat(5 - filledStars);
 
   return (
-    <div className="dash-wrapper">
-      <div className="side-panel">
-        <h1 className="brand-title">Chaptr</h1>
-        <nav className="navigation">
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/clubs" className="nav-link active">Book Clubs</Link>
-          <Link to="/challenges" className="nav-link">Challenges</Link>
-          <Link to="/books" className="nav-link">Discover</Link>
-        </nav>
-      </div>
-
-      <div className="primary-content">
-        <div className="book-details-page">
-          <div className="book-details-container">
-            <div className="book-details-content">
-              <div className="book-details-cover">
-                {book.coverImage ? (
-                  <img src={book.coverImage} alt={`${book.title} cover`} className="book-details-cover-image" />
-                ) : (
-                  <div className="book-details-cover-placeholder">No Cover Available</div>
-                )}
-              </div>
-              <div className="book-details-info">
-                <h1 className="book-details-title">{book.title}</h1>
-                <p className="book-details-author">by {book.author}</p>
-                <div className="book-details-rating">
-                  <span className="stars">{stars}</span> {averageRating.toFixed(1)}
-                </div>
-                <p className="book-details-genre"><strong>Genre:</strong> {book.genre}</p>
-                <p className="book-details-pages"><strong>Pages:</strong> {book.totalPages || 'N/A'}</p>
-                <p className="book-details-summary"><strong>Summary:</strong> {book.summary || 'No summary available'}</p>
-                <button className="add-button" onClick={handleAddToList}>
-                  Add to List
-                </button>
-              </div>
-            </div>
-
-            {/* Review Form */}
-            <div className="review-form-container">
-              <h2>Submit a Review</h2>
-              {formError && <div className="error">{formError}</div>}
-              <form onSubmit={handleReviewSubmit}>
-                <div className="form-group">
-                  <label>Rating:</label>
-                  <div className="star-rating">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <span
-                        key={star}
-                        className={`star ${parseInt(reviewForm.rating) >= star ? 'filled' : ''}`}
-                        onClick={() => handleStarClick(star)}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="comment">Comment (optional):</label>
-                  <textarea
-                    id="comment"
-                    name="comment"
-                    value={reviewForm.comment}
-                    onChange={handleReviewChange}
-                    rows="4"
-                  />
-                </div>
-                <button type="submit" className="add-button">
-                  Submit Review
-                </button>
-              </form>
-            </div>
-
-            {/* Display Reviews */}
-            <div className="reviews-container">
-              <h2>Reviews</h2>
-              {book.reviews && book.reviews.length > 0 ? (
-                <ul className="reviews-list">
-                  {book.reviews.map((review, index) => (
-                    <li key={index} className="review-item">
-                      <p>
-                        <strong>{review.reviewerName}</strong> rated it {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                      </p>
-                      {review.comment && <p>{review.comment}</p>}
-                      <p className="review-date">{new Date(review.date).toLocaleDateString()}</p>
-                    </li>
-                  ))}
-                </ul>
+    <div className="primary-content">
+      <div className="book-details-page">
+        <div className="book-details-container">
+          <div className="book-details-content">
+            <div className="book-details-cover">
+              {book.coverImage ? (
+                <img src={book.coverImage} alt={`${book.title} cover`} className="book-details-cover-image" />
               ) : (
-                <p>No reviews yet.</p>
+                <div className="book-details-cover-placeholder">No Cover Available</div>
               )}
             </div>
+            <div className="book-details-info">
+              <h1 className="book-details-title">{book.title}</h1>
+              <p className="book-details-author">by {book.author}</p>
+              <div className="book-details-rating">
+                <span className="stars">{stars}</span> {averageRating.toFixed(1)}
+              </div>
+              <p className="book-details-genre"><strong>Genre:</strong> {book.genre}</p>
+              <p className="book-details-pages"><strong>Pages:</strong> {book.totalPages || 'N/A'}</p>
+              <p className="book-details-summary"><strong>Summary:</strong> {book.summary || 'No summary available'}</p>
+              <button className="add-button" onClick={handleAddToList}>
+                Add to List
+              </button>
+            </div>
+          </div>
+
+          {/* Review Form */}
+          <div className="review-form-container">
+            <h2>Submit a Review</h2>
+            {formError && <div className="error">{formError}</div>}
+            <form onSubmit={handleReviewSubmit}>
+              <div className="form-group">
+                <label>Rating:</label>
+                <div className="star-rating">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      className={`star ${parseInt(reviewForm.rating) >= star ? 'filled' : ''}`}
+                      onClick={() => handleStarClick(star)}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="comment">Comment (optional):</label>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  value={reviewForm.comment}
+                  onChange={handleReviewChange}
+                  rows="4"
+                />
+              </div>
+              <button type="submit" className="add-button">
+                Submit Review
+              </button>
+            </form>
+          </div>
+
+          {/* Display Reviews */}
+          <div className="reviews-container">
+            <h2>Reviews</h2>
+            {book.reviews && book.reviews.length > 0 ? (
+              <ul className="reviews-list">
+                {book.reviews.map((review, index) => (
+                  <li key={index} className="review-item">
+                    <p>
+                      <strong>{review.reviewerName}</strong> rated it {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                    </p>
+                    {review.comment && <p>{review.comment}</p>}
+                    <p className="review-date">{new Date(review.date).toLocaleDateString()}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No reviews yet.</p>
+            )}
           </div>
         </div>
       </div>

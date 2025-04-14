@@ -39,68 +39,68 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 1.5rem;
+  padding: 1rem; /* Reduced from 1.5rem */
 }
 
 /* Register Card */
 .register-card {
   width: 100%;
-  max-width: 400px;
-  background: rgba(0, 0, 0, 0.3); /* Lighter semi-transparent black background */
-  padding: 2rem;
-  border-radius: 12px;
+  max-width: 360px; /* Reduced from 400px */
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem; /* Reduced from 2rem */
+  border-radius: 10px; /* Slightly smaller */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   text-align: center;
-  -webkit-backdrop-filter: blur(10px); /* Safari fix */
-  backdrop-filter: blur(10px); /* Add blur effect */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 /* App Name */
 .app-name {
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* Reduced from 1.8rem */
   font-weight: 700;
-  color: #ffffff; /* White text for "Chaptr" */
-  margin-bottom: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
 }
 
 /* Register Card Heading */
 .register-card h2 {
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* Reduced from 1.5rem */
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: #ffffff; /* Already white, kept for clarity */
+  margin-bottom: 0.8rem; /* Reduced from 1rem */
+  color: #ffffff;
 }
 
 .register-card p {
-  font-size: 0.9rem;
-  color: #ffffff; /* White text for "Enter your information..." */
-  margin-bottom: 1.5rem;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
+  color: #ffffff;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
 }
 
 /* Input Fields */
 .input-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
 }
 
 .input-group label {
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem; /* Reduced from 0.5rem */
   text-align: left;
-  color: #ffffff; /* White text for "Full Name", "Username", etc. labels */
+  color: #ffffff;
 }
 
 .input-group input {
-  padding: 0.8rem;
-  font-size: 1rem;
+  padding: 0.6rem; /* Reduced from 0.8rem */
+  font-size: 0.95rem; /* Reduced from 1rem */
   border: 1px solid var(--light-gray);
-  border-radius: 6px;
+  border-radius: 5px; /* Slightly smaller */
   outline: none;
   transition: border-color 0.2s ease;
   background-color: white;
-  color: #000000; /* Black text for input fields for readability */
+  color: #000000;
 }
 
 .input-group input:focus {
@@ -110,12 +110,12 @@ body {
 /* Submit Button */
 button {
   width: 100%;
-  padding: 0.8rem;
-  font-size: 1rem;
-  color: white; /* Already white, kept for clarity */
+  padding: 0.7rem; /* Reduced from 0.8rem */
+  font-size: 0.95rem; /* Reduced from 1rem */
+  color: white;
   background-color: var(--primary);
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-weight: 500;
@@ -133,50 +133,50 @@ button:disabled {
 /* Error Message */
 .error-alert {
   background-color: #fff0f0;
-  color: #ffffff; /* White text for error messages */
-  padding: 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
+  color: #ffffff;
+  padding: 0.6rem; /* Reduced from 0.8rem */
+  border-radius: 5px;
+  font-size: 0.8rem; /* Reduced from 0.85rem */
+  margin-bottom: 0.8rem; /* Reduced from 1rem */
 }
 
 /* Error Text */
 .error-text {
-  color: #ffffff; /* White text for error text */
-  font-size: 0.85rem;
-  margin-top: 0.3rem;
+  color: #ffffff;
+  font-size: 0.8rem; /* Reduced from 0.85rem */
+  margin-top: 0.2rem; /* Reduced from 0.3rem */
 }
 
 /* Login Link */
 .login-link {
-  font-size: 0.9rem;
-  margin-top: 1rem;
-  color: #ffffff; /* White text for "Already have an account?" */
+  font-size: 0.85rem; /* Reduced from 0.9rem */
+  margin-top: 0.8rem; /* Reduced from 1rem */
+  color: #ffffff;
 }
 
 .login-link a {
-  color: #ffffff; /* White text for "Login" link */
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
 }
 
 .login-link a:hover {
-  color: var(--secondary); /* Keep hover color as secondary (darker blue) */
+  color: var(--secondary);
   text-decoration: underline;
 }
 
 /* Responsive Design */
 @media (max-width: 576px) {
   .register-card {
-      padding: 1.5rem;
-      margin: 1rem;
+    padding: 1.2rem; /* Reduced from 1.5rem */
+    margin: 0.8rem; /* Reduced from 1rem */
   }
   
   .app-name {
-      font-size: 1.5rem;
+    font-size: 1.4rem; /* Reduced from 1.5rem */
   }
   
   .register-card h2 {
-      font-size: 1.3rem;
+    font-size: 1.2rem; /* Reduced from 1.3rem */
   }
 }

@@ -1,9 +1,22 @@
 /* styles/books.css */
 
-.books-wrapper {
+/* Ensure layout matches other pages */
+.dash-wrapper {
+  display: flex;
   min-height: 100vh;
+  background-color: #f5f7fa; /* Light background to match other pages */
+}
+
+/* Ensure primary-content aligns with navbar */
+.primary-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #ffffff; /* White background to match other pages */
+}
+
+.books-wrapper {
   background: linear-gradient(135deg, #e6f0fa 0%, #f5f7fa 100%);
-  padding: 60px 20px 40px; /* Extra top padding for hamburger */
+  padding: 40px 20px; /* Adjusted padding (removed extra top padding for hamburger) */
   position: relative;
   overflow: hidden;
 }
@@ -273,7 +286,7 @@
 
 @media (max-width: 768px) {
   .books-wrapper {
-    padding: 50px 10px 20px;
+    padding: 30px 10px; /* Adjusted padding for mobile */
   }
 
   .books-content h1 {

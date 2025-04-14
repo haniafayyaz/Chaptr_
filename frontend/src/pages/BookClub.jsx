@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Add useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/bookClubs.css";
-import "../styles/navbar.css";
+import Navbar from "./Navbar"; // Import the Navbar component
 
 const Clubs = () => {
   const [clubs, setClubs] = useState([]);
@@ -19,7 +19,7 @@ const Clubs = () => {
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(null);
 
-  const navigate = useNavigate(); // For navigation
+  const navigate = useNavigate();
   const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
@@ -75,10 +75,8 @@ const Clubs = () => {
 
   const handleClubAction = async (clubId) => {
     if (activeTab === "myClubs") {
-      // Navigate to club page for "View Club"
       navigate(`/club/${clubId}`);
     } else {
-      // Handle join club for "Discover" tab
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         if (!user || !user.username) {
@@ -224,15 +222,7 @@ const Clubs = () => {
 
   return (
     <div className="dash-wrapper">
-      <div className="side-panel">
-        <h1 className="brand-title">Chaptr</h1>
-        <nav className="navigation">
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/clubs" className="nav-link active">Book Clubs</Link>
-          <Link to="/challenges" className="nav-link">Challenges</Link>
-          <Link to="/books" className="nav-link">Discover</Link>
-        </nav>
-      </div>
+      <Navbar /> {/* Replace static navbar with Navbar component */}
 
       <div className="primary-content">
         <div className="clubs-wrapper">

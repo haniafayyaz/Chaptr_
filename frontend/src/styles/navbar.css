@@ -1,216 +1,279 @@
-/* bookDetails.css (or a shared navbar.css) */
+/* navbar.css */
 
-/* Wrapper for the entire page */
-.dash-wrapper {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
+/* Import a modern Google Font for aesthetic text */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-/* Sidebar navigation */
+/* Navbar styles */
 .side-panel {
   width: 250px;
-  background-color: #ffffff;
+  background: url('../assets/navbg.jpg') no-repeat center center/cover;
+  background-color: #1d3557; /* Fallback */
+  position: relative;
   padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: fixed;
+  height: 100vh;
+  left: -250px;
+  top: 0;
+  z-index: 1000;
+  transition: left 0.3s ease-in-out;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 12px 12px 0;
 }
 
+/* Overlay for readability */
+.side-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.side-panel.open {
+  left: 0;
+}
+
+/* Toggle button */
+.nav-toggle {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 126, 95, 0.5);
+  transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-toggle:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 126, 95, 0.7);
+}
+
+.nav-toggle.open {
+  left: 250px;
+  /* Removed rotate(180deg) since we're handling direction via .toggle-icon */
+}
+
+/* Toggle icon */
+.toggle-icon {
+  font-size: 20px;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.nav-toggle.open .toggle-icon {
+  transform: scaleX(-1); /* Flip the arrow horizontally to change direction */
+}
+
+/* Brand title */
 .brand-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: transparent;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-bottom: 40px;
   text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  padding-bottom: 15px;
+  animation: fadeIn 1s ease-in-out;
 }
 
+.brand-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  border-radius: 3px;
+}
+
+/* Fade-in animation for brand title */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Navigation links */
 .navigation {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: auto;
 }
 
 .nav-link {
   display: block;
-  padding: 10px 15px;
-  color: #666;
-  text-decoration: none;
+  padding: 12px 20px;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  transition: background-color 0.2s, color 0.2s;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .nav-link:hover {
-  background-color: #f0f0f0;
-  color: #333;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(5px); /* Add prefix for Safari */
+  backdrop-filter: blur(5px);
+  color: #fff;
+  transform: translateX(5px);
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, #ff7e5f, #feb47b);
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover::before {
+  transform: scaleY(1);
 }
 
 .nav-link.active {
-  background-color: #007bff;
-  color: #ffffff;
-}
-
-/* Primary content area */
-.primary-content {
-  flex: 1;
-  padding: 20px;
-  background-color: #f5f5f5;
-}
-
-/* Existing bookDetails.css styles (append these to avoid overwriting) */
-.book-details-page {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.book-details-container {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.book-details-content {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.book-details-cover {
-  flex: 0 0 200px;
-}
-
-.book-details-cover-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.book-details-cover-placeholder {
-  width: 100%;
-  height: 300px;
-  background-color: #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  color: #666;
-}
-
-.book-details-info {
-  flex: 1;
-}
-
-.book-details-title {
-  font-size: 28px;
-  margin: 0 0 10px;
-}
-
-.book-details-author {
-  font-size: 18px;
-  color: #666;
-  margin: 0 0 10px;
-}
-
-.book-details-rating {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.book-details-rating .stars {
-  color: #f5c518;
-}
-
-.book-details-genre,
-.book-details-pages,
-.book-details-summary {
-  margin: 10px 0;
-}
-
-.add-button {
-  background-color: #007bff;
+  background: rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: blur(5px); /* Add prefix for Safari */
+  backdrop-filter: blur(5px);
   color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+  font-weight: 600;
 }
 
-.add-button:hover {
-  background-color: #0056b3;
+.nav-link.active::before {
+  transform: scaleY(1);
 }
 
-.review-form-container,
-.reviews-container {
-  margin-top: 20px;
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: calc(100% - 40px);
+  height: 2px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
 }
 
-.review-form-container h2,
-.reviews-container h2 {
-  font-size: 22px;
-  margin-bottom: 10px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.star-rating {
-  display: flex;
-  gap: 5px;
-}
-
-.star {
-  font-size: 24px;
-  color: #ccc;
-  cursor: pointer;
-}
-
-.star.filled {
-  color: #f5c518;
-}
-
-textarea {
+/* Navbar footer decoration */
+.nav-footer {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
 }
 
-.reviews-list {
-  list-style: none;
-  padding: 0;
+.nav-decoration {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  animation: pulse 2s infinite ease-in-out;
 }
 
-.review-item {
-  border-bottom: 1px solid #e0e0e0;
-  padding: 10px 0;
+.nav-decoration:nth-child(2) {
+  animation-delay: 0.4s;
 }
 
-.review-item:last-child {
-  border-bottom: none;
+.nav-decoration:nth-child(3) {
+  animation-delay: 0.8s;
 }
 
-.review-date {
-  font-size: 14px;
-  color: #999;
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
 }
 
-.error {
-  color: red;
-  margin-bottom: 10px;
+/* Adjust content when navbar is open */
+.primary-content {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
 }
 
-.loading {
-  text-align: center;
-  padding: 20px;
+.side-panel.open ~ .primary-content {
+  margin-left: 250px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .side-panel {
+    width: 200px;
+  }
+
+  .side-panel.open {
+    left: 0;
+  }
+
+  .side-panel {
+    left: -200px;
+  }
+
+  .nav-toggle.open {
+    left: 200px;
+  }
+
+  .side-panel.open ~ .primary-content {
+    margin-left: 200px;
+  }
+
+  .brand-title {
+    font-size: 24px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .nav-toggle {
+    width: 35px;
+    height: 35px;
+  }
 }
