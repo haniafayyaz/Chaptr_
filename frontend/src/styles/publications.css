@@ -1,0 +1,277 @@
+/* publications.css */
+.pub-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+  }
+  
+  .pub-main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pub-section {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+  }
+  
+  .pub-panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+  }
+  
+  .pub-panel h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .pub-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .pub-tabs {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .pub-tab {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #555;
+    background: #e9ecef;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .pub-tab.pub-tab-active {
+    background: #007bff;
+    color: #fff;
+  }
+  
+  .pub-tab:hover {
+    background: #d3d9df;
+  }
+  
+  .pub-search {
+    flex: 1;
+    max-width: 300px;
+  }
+  
+  .pub-search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .pub-search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  .pub-form {
+    margin-bottom: 30px;
+  }
+  
+  .pub-form h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .pub-form-group {
+    margin-bottom: 15px;
+  }
+  
+  .pub-form-group label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .pub-form-group input,
+  .pub-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .pub-form-group textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  
+  .pub-form-group input:focus,
+  .pub-form-group textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  .pub-submit-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .pub-submit-btn:hover {
+    background: #0056b3;
+  }
+  
+  .pub-error {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .pub-success {
+    color: #28a745;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .pub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .pub-card {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .pub-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .pub-card-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0 0 10px;
+  }
+  
+  .pub-card-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .pub-card-image-container {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .pub-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .pub-card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .pub-card-genre {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 10px;
+  }
+  
+  .pub-card-link {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    color: #fff;
+    background: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  
+  .pub-card-link:hover {
+    background: #0056b3;
+  }
+  
+  .pub-card-content {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 10px;
+  }
+  
+  .pub-card-date {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+  }
+  
+  .pub-loader {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 50px;
+  }
+
+  .pub-remove-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #e74c3c; /* Red for delete action */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pub-remove-btn:hover {
+    background-color: #c0392b; /* Darker red on hover */
+  }
+  
+  .pub-remove-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.5);
+  }
