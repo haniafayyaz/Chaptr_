@@ -8,6 +8,7 @@ const readingListRoutes = require('./routes/readingListRoutes');
 const bookClubRoutes = require('./routes/bookClub'); // Book Club Routes
 const goalRoutes = require('./routes/goalRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const authorRoutes = require("./routes/authorRoutes");
 const app = express();
 
 // Middleware
@@ -26,6 +27,8 @@ app.use("/api/clubs", bookClubRoutes); // Book Club Routes
 app.use('/api/goals', goalRoutes);
 
 app.use('/api/profile', profileRoutes);
+
+app.use("/api/authors", authorRoutes);
 
 // Serve Frontend (Fixes 404 on Refresh)
 const clientBuildPath = path.join(__dirname, "client", "build");

@@ -4,40 +4,40 @@ const Book = require('../models/Books');
 // Fetch books from the Gutenberg API and store them in the database
 const fetchBooks = async (req, res) => {
   try {
-    const response = await axios.get('https://gutendex.com/books');
-
-    if (!response.data || !response.data.results) {
-      return res.status(500).json({ message: 'No books found from Gutenberg API' });
-    }
-
-    const booksData = response.data.results;
     const booksToSave = [];
+    const totalPages = 5; // Set how many pages you want to fetch (each page = ~32 books)
 
-    for (const book of booksData) {
-      const existingBook = await Book.findOne({
-        title: book.title,
-        author: book.authors && book.authors.length > 0 ? book.authors[0].name : 'Unknown Author',
-      });
+    for (let page = 1; page <= totalPages; page++) {
+      const response = await axios.get(`https://gutendex.com/books?page=${page}`);
 
-      if (!existingBook) {
-        let genre = 'Unknown';
-        if (book.bookshelves && book.bookshelves.length > 0) {
-          const browsingGenres = book.bookshelves
-            .filter((shelf) => shelf.toLowerCase().startsWith('browsing: '))
-            .map((shelf) => shelf.replace(/(?:)^Browsing: /, '').trim());
-          genre = browsingGenres.length > 0 ? browsingGenres[0] : 'Unknown';
+      if (!response.data || !response.data.results) {
+        continue; // Skip if no results on this page
+      }
+
+      for (const book of response.data.results) {
+        const title = book.title || 'Unknown Title';
+        const author = book.authors && book.authors.length > 0 ? book.authors[0].name : 'Unknown Author';
+
+        const existingBook = await Book.findOne({ title, author });
+        if (!existingBook) {
+          let genre = 'Unknown';
+          if (book.bookshelves && book.bookshelves.length > 0) {
+            const browsingGenres = book.bookshelves
+              .filter((shelf) => shelf.toLowerCase().startsWith('browsing: '))
+              .map((shelf) => shelf.replace(/(?:)^Browsing: /i, '').trim());
+            genre = browsingGenres.length > 0 ? browsingGenres[0] : 'Unknown';
+          }
+
+          booksToSave.push({
+            title,
+            author,
+            genre,
+            totalPages: Math.floor(Math.random() * (300 - 200 + 1)) + 200,
+            coverImage: book.formats && book.formats['image/jpeg'] ? book.formats['image/jpeg'] : null,
+            summary: book.summaries && book.summaries.length > 0 ? book.summaries[0] : 'No summary available',
+            averageRating: 0,
+          });
         }
-
-        const bookData = {
-          title: book.title || 'Unknown Title',
-          author: book.authors && book.authors.length > 0 ? book.authors[0].name : 'Unknown Author',
-          genre: genre,
-          totalPages: Math.floor(Math.random() * (300 - 200 + 1)) + 200,
-          coverImage: book.formats && book.formats['image/jpeg'] ? book.formats['image/jpeg'] : null,
-          summary: book.summaries && book.summaries.length > 0 ? book.summaries[0] : 'No summary available',
-          averageRating: 0, // Initialize averageRating
-        };
-        booksToSave.push(bookData);
       }
     }
 
@@ -52,6 +52,7 @@ const fetchBooks = async (req, res) => {
     res.status(500).json({ message: 'Error fetching books', error: error.message });
   }
 };
+
 
 // Get all books
 const getAllBooks = async (req, res) => {

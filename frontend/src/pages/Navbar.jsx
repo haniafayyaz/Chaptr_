@@ -42,7 +42,6 @@ const Navbar = () => {
           {isAuthor && (
             <>
               <Link to="/publications" className="nav-link">Publications</Link>
-              <Link to="/book-releases" className="nav-link">Book Releases</Link>
             </>
           )}
         </nav>

@@ -13,9 +13,7 @@ import BookClub from './pages/BookClub';
 import ClubPage from './pages/ClubPosts';
 import Profile from './pages/Profile';
 import Authors from './pages/Authors'; // New import
-import BookReleases from './pages/BookReleases'; // New import
 import Publications from './pages/Publications'; // New import
-import BookReleasesUser from './pages/BookReleasesUser'; 
 
 function App() {
   return (
@@ -85,26 +83,10 @@ function App() {
             }
           />
           <Route
-            path="/book-releases"
-            element={
-              <ProtectedRoute>
-                <BookReleases />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/publications"
             element={
               <ProtectedRoute>
                 <Publications />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/book-releases-user"
-            element={
-              <ProtectedRoute>
-                <BookReleasesUser />
               </ProtectedRoute>
             }
           />
