@@ -19,7 +19,7 @@ const login = async (req, res) => {
 
     // Create a JWT token
     const token = jwt.sign(
-      { userId: user._id, name: user.name, email: user.email, username: user.username },
+      { userId: user._id, name: user.name, email: user.email, username: user.username, isAuthor: user.isAuthor},
       process.env.JWT_SECRET, // Secret key from .env file
       { expiresIn: "1h" } // Expiry time for the token
     );
@@ -27,7 +27,7 @@ const login = async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       token,
-      user: { name: user.name, email: user.email, username: user.username },
+      user: { name: user.name, email: user.email, username: user.username, isAuthor: user.isAuthor},
     });
 
   } catch (error) {
@@ -37,7 +37,7 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { name, email, username, password } = req.body;
+  const { name, email, username, password, isAuthor } = req.body;
 
   if (!name || !email || !username || !password) {
     return res.status(400).json({ message: "All fields are required" });
@@ -60,19 +60,25 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user in the database
-    const newUser = new User({ name, email, username, password: hashedPassword });
+    const newUser = new User({
+      name,
+      email,
+      username,
+      password: hashedPassword,
+      isAuthor: isAuthor || false, // Use provided isAuthor or default to false
+    });
     await newUser.save();
 
     // Create a JWT token
     const token = jwt.sign(
-      { userId: newUser._id, name: newUser.name, email: newUser.email, username: newUser.username },
-      process.env.JWT_SECRET, // Secret key from .env file
-      { expiresIn: "1h" } // Expiry time for the token
+      { userId: newUser._id, name: newUser.name, email: newUser.email, username: newUser.username, isAuthor: newUser.isAuthor },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
     );
 
     res.status(201).json({
       message: "Registration successful",
-      user: { name, email, username },
+      user: { name, email, username, isAuthor },
       token,
     });
   } catch (error) {

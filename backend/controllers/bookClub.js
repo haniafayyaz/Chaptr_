@@ -54,7 +54,6 @@ exports.getClubs = async (req, res) => {
 // Create a new club
 exports.createClub = async (req, res) => {
   try {
-    console.log('POST /api/clubs received:', req.body, req.file);
     const { name, description, tags, username } = req.body;
 
     if (!name || !description) {
@@ -82,7 +81,6 @@ exports.createClub = async (req, res) => {
 
     const newClub = new Club(clubData);
     await newClub.save();
-    console.log('Created club:', newClub);
     res.status(201).json(newClub);
   } catch (error) {
     console.error('Error creating club:', error);

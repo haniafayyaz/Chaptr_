@@ -1,61 +1,59 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
-import axios from "axios"; // Import axios
-import "../styles/register.css"; // Ensure correct import
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../styles/register.css";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState(""); // New state for username
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isAuthor, setIsAuthor] = useState(false); // New state for author checkbox
   const [passwordError, setPasswordError] = useState("");
-  const [error, setError] = useState(""); // To display errors
-  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if passwords match
     if (password !== confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
 
-    setLoading(true); // Set loading to true while making the request
+    setLoading(true);
 
     try {
       const response = await axios.post("http://localhost:5000/auth/register", {
         name,
-        username, // Sending username to the backend
+        username,
         email,
         password,
+        isAuthor, // Include isAuthor in the request
       });
 
-      console.log(response.data); // You can check the response
+      console.log(response.data);
       alert("Account created successfully!");
-
-      // Redirect after successful registration using navigate
       navigate("/login");
-
     } catch (error) {
       setError(error.response ? error.response.data.message : "Server error. Please try again.");
     }
 
-    setLoading(false); // Set loading to false after the request is done
+    setLoading(false);
   };
 
   return (
     <div className="register-container">
       <div className="register-card">
-        <h1 className="app-name">Chaptr</h1> {/* App Name inside the box */}
+        <h1 className="app-name">Chaptr</h1>
         <h2>Create an account</h2>
         <p>Enter your information to create an account</p>
 
         {passwordError && <div className="error-alert">{passwordError}</div>}
-        {error && <div className="error-alert">{error}</div>} {/* Display other errors */}
+        {error && <div className="error-alert">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="input-group">
@@ -70,7 +68,7 @@ const Register = () => {
           </div>
 
           <div className="input-group">
-            <label>Username</label> {/* New username field */}
+            <label>Username</label>
             <input
               type="text"
               placeholder="john_doe"
@@ -109,6 +107,17 @@ const Register = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
+          </div>
+
+          <div className="input-group">
+            <label>
+              <input
+                type="checkbox"
+                checked={isAuthor}
+                onChange={(e) => setIsAuthor(e.target.checked)}
+              />
+              Register as an author
+            </label>
           </div>
 
           <button type="submit" disabled={loading}>
