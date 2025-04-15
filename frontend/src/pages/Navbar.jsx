@@ -38,7 +38,7 @@ const Navbar = () => {
           <Link to="/challenges" className="nav-link">Challenges</Link>
           <Link to="/books" className="nav-link">Discover</Link>
           <Link to="/authors" className="nav-link">Authors</Link>
-          <Link to="/book-releases-user" className="nav-link">Calander</Link>
+          <Link to="/calendar" className="nav-link">Calendar</Link>
           {isAuthor && (
             <>
               <Link to="/publications" className="nav-link">Publications</Link>

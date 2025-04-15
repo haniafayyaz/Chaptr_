@@ -10,6 +10,7 @@ const goalRoutes = require('./routes/goalRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const authorRoutes = require("./routes/authorRoutes");
 const publicationRoutes = require("./routes/publicationRoutes");
+const calendarRoutes = require("./routes/calendarRoutes");
 const app = express();
 
 // Middleware
@@ -32,6 +33,8 @@ app.use('/api/profile', profileRoutes);
 app.use("/api/authors", authorRoutes);
 
 app.use("/api/publications", publicationRoutes);
+
+app.use("/api/calendar", calendarRoutes);
 
 // Serve Frontend (Fixes 404 on Refresh)
 const clientBuildPath = path.join(__dirname, "client", "build");

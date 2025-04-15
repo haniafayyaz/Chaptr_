@@ -12,8 +12,9 @@ import BookDetails from './pages/BookDetails';
 import BookClub from './pages/BookClub';
 import ClubPage from './pages/ClubPosts';
 import Profile from './pages/Profile';
-import Authors from './pages/Authors'; // New import
-import Publications from './pages/Publications'; // New import
+import Authors from './pages/Authors'; 
+import Publications from './pages/Publications'; 
+import Calendar from './pages/Calendar';
 
 function App() {
   return (
@@ -87,6 +88,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Publications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/calendar"
+            element={
+              <ProtectedRoute>
+                <Calendar />
               </ProtectedRoute>
             }
           />

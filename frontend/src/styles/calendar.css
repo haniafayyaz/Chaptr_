@@ -1,0 +1,167 @@
+/* calendar.css */
+.cal-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+  }
+  
+  .cal-main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .cal-section {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+  }
+  
+  .cal-panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+  }
+  
+  .cal-panel h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .cal-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .cal-month {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .cal-nav-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .cal-nav-btn:hover {
+    background: #0056b3;
+  }
+  
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  
+  .cal-header {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 5px;
+  }
+  
+  .cal-day {
+    position: relative;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 80px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .cal-day:hover {
+    background: #e0e0e0;
+  }
+  
+  .cal-day-empty {
+    background: #fff;
+    border: none;
+    cursor: default;
+  }
+  
+  .cal-day-release {
+    background: #d1e7ff;
+  }
+  
+  .cal-day-selected {
+    background: #007bff;
+    color: #fff;
+  }
+  
+  .cal-day-number {
+    font-size: 0.9rem;
+    color: inherit;
+  }
+  
+  .cal-day-releases {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #333;
+  }
+  
+  .cal-day-release-title {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .cal-day-more {
+    font-size: 0.8rem;
+    color: #007bff;
+  }
+  
+  .cal-details {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .cal-details h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .cal-release-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .cal-release-item {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .cal-loader {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 50px;
+  }
+  
+  .cal-error {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #dc3545;
+    margin-top: 50px;
+  }
