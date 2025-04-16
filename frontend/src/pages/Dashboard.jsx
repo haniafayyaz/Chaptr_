@@ -238,12 +238,13 @@ const Dashboard = () => {
       setGoal({
         ...goal,
         dailyPagesGoal: parseInt(newGoalInput),
-        currentProgress: 0,
       });
 
       setStats((prev) => ({
         ...prev,
-        goalProgress: 0,
+        goalProgress: parseInt(newGoalInput) > 0
+          ? Math.round((goal.currentProgress / parseInt(newGoalInput)) * 100)
+          : 0,
       }));
 
       setShowGoalModal(false);
