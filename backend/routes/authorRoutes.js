@@ -7,5 +7,7 @@ router.get("/", authorController.getAllAuthors);
 
 // Follow/Unfollow an author
 router.post("/:id/follow", authorController.followAuthor);
+router.get("/announcements", authorController.getFollowedAuthorsAnnouncements);
+router.get("/books", authorController.getFollowedAuthorsBooks);
 
 module.exports = router;

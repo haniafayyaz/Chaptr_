@@ -6,31 +6,86 @@ import Navbar from "./Navbar";
 const Authors = () => {
   const [authors, setAuthors] = useState([]);
   const [filteredAuthors, setFilteredAuthors] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("followedAuthors");
+  const [activitySubTab, setActivitySubTab] = useState("announcements");
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const BASE_URL = "http://localhost:5000";
 
+  const fetchActivityData = async (username) => {
+    try {
+      const announcementsUrl = `${BASE_URL}/api/authors/announcements?username=${encodeURIComponent(username)}`;
+      const booksUrl = `${BASE_URL}/api/authors/books?username=${encodeURIComponent(username)}`;
+      console.log("Fetching activity data - Announcements URL:", announcementsUrl);
+      console.log("Fetching activity data - Books URL:", booksUrl);
+
+      const [announcementsResponse, booksResponse] = await Promise.all([
+        fetch(announcementsUrl),
+        fetch(booksUrl)
+      ]);
+
+      console.log("Announcements response:", announcementsResponse.ok, await announcementsResponse.clone().json());
+      console.log("Books response:", booksResponse.ok, await booksResponse.clone().json());
+
+      if (!announcementsResponse.ok || !booksResponse.ok) {
+        throw new Error("Failed to fetch activity data");
+      }
+
+      const [announcementsData, booksData] = await Promise.all([
+        announcementsResponse.json(),
+        booksResponse.json()
+      ]);
+
+      console.log("Announcements data:", announcementsData);
+      console.log("Books data:", booksData);
+
+      return { announcementsData, booksData };
+    } catch (err) {
+      console.error("Error fetching activity data:", err);
+      throw err;
+    }
+  };
+
   useEffect(() => {
-    const fetchAuthors = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/api/authors`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch authors");
+        setLoading(true);
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user || !user.username) {
+          console.error("User not logged in or username missing");
+          navigate("/login");
+          return;
         }
-        const data = await response.json();
-        setAuthors(data);
-        setFilteredAuthors(data);
+        console.log("Logged-in user:", user);
+        console.log("Fetching with username:", user.username);
+
+        const authorsUrl = `${BASE_URL}/api/authors`;
+        console.log("Authors URL:", authorsUrl);
+
+        const [authorsResponse, { announcementsData, booksData }] = await Promise.all([
+          fetch(authorsUrl).then(res => res.json()),
+          fetchActivityData(user.username)
+        ]);
+
+        console.log("Authors data:", authorsResponse);
+
+        setAuthors(authorsResponse);
+        setFilteredAuthors(authorsResponse);
+        setAnnouncements(announcementsData);
+        setBooks(booksData);
         setLoading(false);
       } catch (err) {
+        console.error("Fetch error:", err);
         setError(err.message);
         setLoading(false);
       }
     };
 
-    fetchAuthors();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -55,6 +110,13 @@ const Authors = () => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setSearchQuery("");
+    if (tab !== "recentActivity") {
+      setActivitySubTab("announcements");
+    }
+  };
+
+  const handleSubTabChange = (subTab) => {
+    setActivitySubTab(subTab);
   };
 
   const handleAuthorAction = async (authorId) => {
@@ -96,6 +158,12 @@ const Authors = () => {
           author._id === authorId ? updatedAuthor : author
         )
       );
+
+      // Refetch announcements and books for the updated followed authors
+      const { announcementsData, booksData } = await fetchActivityData(user.username);
+      setAnnouncements(announcementsData);
+      setBooks(booksData);
+
       alert(`Successfully ${updatedAuthor.followers.includes(user.username) ? "followed" : "unfollowed"} the author!`);
     } catch (err) {
       alert(err.message);
@@ -104,7 +172,7 @@ const Authors = () => {
   };
 
   if (loading) {
-    return <div className="author-loader">Loading authors...</div>;
+    return <div className="author-loader">Loading data...</div>;
   }
 
   if (error) {
@@ -144,18 +212,97 @@ const Authors = () => {
                 >
                   All Authors
                 </button>
+                <button
+                  className={`author-tab ${activeTab === "recentActivity" ? "author-tab-active" : ""}`}
+                  onClick={() => handleTabChange("recentActivity")}
+                >
+                  Recent Activity
+                </button>
               </div>
-              <div className="author-search">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  placeholder="Search authors..."
-                  className="author-search-input"
-                />
-              </div>
+              {activeTab !== "recentActivity" && (
+                <div className="author-search">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Search authors..."
+                    className="author-search-input"
+                  />
+                </div>
+              )}
             </div>
-            {displayedAuthors.length === 0 ? (
+
+            {activeTab === "recentActivity" ? (
+              <div className="activity-section">
+                <div className="activity-subtabs">
+                  <button
+                    className={`activity-subtab ${activitySubTab === "announcements" ? "activity-subtab-active" : ""}`}
+                    onClick={() => handleSubTabChange("announcements")}
+                  >
+                    Announcements
+                  </button>
+                  <button
+                    className={`activity-subtab ${activitySubTab === "publishedBooks" ? "activity-subtab-active" : ""}`}
+                    onClick={() => handleSubTabChange("publishedBooks")}
+                  >
+                    Published Books
+                  </button>
+                </div>
+
+                {activitySubTab === "announcements" && (
+                  <div className="announcements-grid">
+                    {console.log("Rendering announcements:", announcements)}
+                    {announcements.length === 0 ? (
+                      <p>No announcements from followed authors.</p>
+                    ) : (
+                      announcements.map((announcement, index) => (
+                        <div key={index} className="announcement-card">
+                          <h3>{announcement.title || "Untitled Announcement"}</h3>
+                          <p className="announcement-content">{announcement.content || "No content available"}</p>
+                          <p className="announcement-date">Posted on: {announcement.date || "Date not available"}</p>
+                          <p className="announcement-author">By: @{announcement.authorUsername}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {activitySubTab === "publishedBooks" && (
+                  <div className="books-grid">
+                    {console.log("Rendering books:", books)}
+                    {books.length === 0 ? (
+                      <p>No books published by followed authors.</p>
+                    ) : (
+                      books.map((book, index) => (
+                        <div key={index} className="book-card">
+                          <h3>{book.name || "Untitled Book"}</h3>
+                          <p className="book-genre">Genre: {book.genre || "Unknown"}</p>
+                          <p className="book-author">By: @{book.authorUsername}</p>
+                          {book.coverImage && (
+                            <img
+                              src={`${BASE_URL}${book.coverImage}`}
+                              alt={`${book.name} cover`}
+                              className="book-cover-image"
+                              onError={(e) => console.error(`Failed to load image: ${BASE_URL}${book.coverImage}`)}
+                            />
+                          )}
+                          {book.bookPdf && (
+                            <a
+                              href={`${BASE_URL}${book.bookPdf}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="book-pdf-btn"
+                            >
+                              View PDF
+                            </a>
+                          )}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : displayedAuthors.length === 0 ? (
               <p>No authors found.</p>
             ) : (
               <div className="author-grid">
