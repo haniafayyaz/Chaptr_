@@ -259,6 +259,17 @@ const Publications = () => {
       return;
     }
 
+    // Validate release date is not in the past
+    const selectedDate = new Date(releaseForm.releaseDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      setFormError("Release date cannot be in the past");
+      return;
+    }
+
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user || !user.username) {
@@ -416,7 +427,7 @@ const Publications = () => {
                   </div>
                   <div className="pub-form-group">
                     <label htmlFor="content">Content</label>
-                    <textarea
+ cathedral                    <textarea
                       id="content"
                       name="content"
                       value={announcementForm.content}
@@ -458,6 +469,7 @@ const Publications = () => {
                       name="releaseDate"
                       value={releaseForm.releaseDate}
                       onChange={handleReleaseFormChange}
+                      min={new Date().toISOString().split("T")[0]} // Prevent past dates in input
                       required
                     />
                   </div>

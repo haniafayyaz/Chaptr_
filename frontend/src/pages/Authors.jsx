@@ -126,6 +126,13 @@ const Authors = () => {
         throw new Error("User not logged in");
       }
 
+      // Check if the user is trying to follow themselves
+      const author = authors.find(a => a._id === authorId);
+      if (author && author.username === user.username) {
+        alert("You cannot follow yourself");
+        return;
+      }
+
       const response = await fetch(`${BASE_URL}/api/authors/${authorId}/follow`, {
         method: "POST",
         headers: {
@@ -328,12 +335,14 @@ const Authors = () => {
                         <span className="author-follower-icon">👥</span> {(author.followers || []).length} followers
                       </p>
                     </div>
-                    <button
-                      className="author-action-btn"
-                      onClick={() => handleAuthorAction(author._id)}
-                    >
-                      {author.followers?.includes(user?.username) ? "Unfollow" : "Follow"}
-                    </button>
+                    {author.username !== user?.username && (
+                      <button
+                        className="author-action-btn"
+                        onClick={() => handleAuthorAction(author._id)}
+                      >
+                        {author.followers?.includes(user?.username) ? "Unfollow" : "Follow"}
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>

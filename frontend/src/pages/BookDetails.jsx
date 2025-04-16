@@ -83,6 +83,13 @@ const BookDetails = () => {
       return;
     }
 
+    // Check if the user has already submitted a review
+    const hasReviewed = book.reviews.some(review => review.reviewerName === user.username);
+    if (hasReviewed) {
+      setFormError('You have already submitted a review for this book');
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:5000/api/books/${id}/reviews`, {
         method: 'POST',
@@ -116,6 +123,9 @@ const BookDetails = () => {
   const filledStars = Math.round(averageRating); // Round to nearest integer for stars
   const stars = '★'.repeat(filledStars) + '☆'.repeat(5 - filledStars);
 
+  // Check if the user has already reviewed the book
+  const hasReviewed = user && book.reviews.some(review => review.reviewerName === user.username);
+
   return (
     <div className="primary-content">
       <div className="book-details-page">
@@ -146,36 +156,42 @@ const BookDetails = () => {
           {/* Review Form */}
           <div className="review-form-container">
             <h2>Submit a Review</h2>
-            {formError && <div className="error">{formError}</div>}
-            <form onSubmit={handleReviewSubmit}>
-              <div className="form-group">
-                <label>Rating:</label>
-                <div className="star-rating">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      className={`star ${parseInt(reviewForm.rating) >= star ? 'filled' : ''}`}
-                      onClick={() => handleStarClick(star)}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="comment">Comment (optional):</label>
-                <textarea
-                  id="comment"
-                  name="comment"
-                  value={reviewForm.comment}
-                  onChange={handleReviewChange}
-                  rows="4"
-                />
-              </div>
-              <button type="submit" className="add-button">
-                Submit Review
-              </button>
-            </form>
+            {hasReviewed ? (
+              <p>You have already submitted a review for this book.</p>
+            ) : (
+              <>
+                {formError && <div className="error">{formError}</div>}
+                <form onSubmit={handleReviewSubmit}>
+                  <div className="form-group">
+                    <label>Rating:</label>
+                    <div className="star-rating">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`star ${parseInt(reviewForm.rating) >= star ? 'filled' : ''}`}
+                          onClick={() => handleStarClick(star)}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="comment">Comment (optional):</label>
+                    <textarea
+                      id="comment"
+                      name="comment"
+                      value={reviewForm.comment}
+                      onChange={handleReviewChange}
+                      rows="4"
+                    />
+                  </div>
+                  <button type="submit" className="add-button">
+                    Submit Review
+                  </button>
+                </form>
+              </>
+            )}
           </div>
 
           {/* Display Reviews */}
