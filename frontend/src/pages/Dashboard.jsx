@@ -621,7 +621,14 @@ const Dashboard = () => {
               <input
                 type="number"
                 value={pagesInput}
-                onChange={(e) => setPagesInput(e.target.value)}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10);
+                  if (!isNaN(value) && value >= 1) {
+                    setPagesInput(value);
+                  } else if (e.target.value === "") {
+                    setPagesInput(""); // Allow clearing the input
+                  }
+                }}
                 placeholder="Enter number of pages"
                 min="1"
               />

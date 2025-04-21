@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/books.css';
-import Navbar from './Navbar'; // Import the Navbar component
+import Navbar from './Navbar'; 
 
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filterOption, setFilterOption] = useState(''); // Selected filter: '', 'author', 'title', 'genre'
-  const [searchQuery, setSearchQuery] = useState(''); // Search input
+  const [filterOption, setFilterOption] = useState(''); 
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Books = () => {
         }
         const data = await response.json();
         setBooks(data);
-        setFilteredBooks(data); // Initialize filteredBooks with all books
+        setFilteredBooks(data); 
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -32,10 +32,10 @@ const Books = () => {
     fetchBooks();
   }, []);
 
-  // Update filtered books when filterOption or searchQuery changes
+
   useEffect(() => {
     if (!filterOption || !searchQuery) {
-      setFilteredBooks(books); // Show all books if no filter or query
+      setFilteredBooks(books); 
       return;
     }
 
@@ -110,6 +110,7 @@ const Books = () => {
                     placeholder={`Search by ${filterOption}`}
                     className="search-input"
                     aria-label={`Search books by ${filterOption}`}
+                    id="search-b"
                   />
                   <button
                     onClick={handleClearSearch}

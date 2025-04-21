@@ -142,6 +142,7 @@ const ClubPage = () => {
                 placeholder="What's on your mind?"
                 className="post-textarea"
                 required
+                id="post-text"
               />
               <button type="submit" className="submit-post-btn">Post</button>
             </form>
