@@ -11,6 +11,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const authorRoutes = require("./routes/authorRoutes");
 const publicationRoutes = require("./routes/publicationRoutes");
 const calendarRoutes = require("./routes/calendarRoutes");
+const userRoutes = require("./routes/userRoutes");
 const app = express();
 
 // Middleware
@@ -27,6 +28,8 @@ app.use('/api/reading-list', readingListRoutes);
 app.use("/api/clubs", bookClubRoutes); // Book Club Routes
 
 app.use('/api/goals', goalRoutes);
+
+app.use('/users', userRoutes);
 
 app.use('/api/profile', profileRoutes);
 

@@ -15,6 +15,8 @@ import Profile from './pages/Profile';
 import Authors from './pages/Authors'; 
 import Publications from './pages/Publications'; 
 import Calendar from './pages/Calendar';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -25,7 +27,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           {/* Protected Routes */}
           <Route
             path="/dashboard"

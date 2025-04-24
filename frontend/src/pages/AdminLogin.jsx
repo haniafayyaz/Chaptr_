@@ -1,18 +1,15 @@
-// src/pages/Login.js
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/login.css';
-import { AuthContext } from '../context/AuthContext';
+import '../styles/adminLogin.css';
 
-const Login = () => {
+const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,33 +20,30 @@ const Login = () => {
     }
 
     setLoading(true);
+    setError('');
 
     try {
-      const response = await axios.post('http://localhost:5000/auth/login', {
+      const response = await axios.post('http://localhost:5000/auth/admin', {
         email,
         password,
       });
 
-      localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-
-      login(response.data.token, response.data.user);
-
-      navigate('/dashboard');
+      navigate('/admin-dashboard');
     } catch (error) {
-      setError(error.response ? error.response.data.message : 'Server error. Please try again.');
+      setError(error.response?.data?.message || 'Failed to login. Please try again.');
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <div>
-      <div className="login-container">
-        <div className="login-card">
-          <h1 className="app-name">Chaptr</h1>
-          <h2 className="heading">Login</h2>
-          <p className="text">Enter your credentials to access your account</p>
+      <div className="admin-login-container">
+        <div className="admin-login-card">
+          <h1 className="app-name">Chaptr Admin</h1>
+          <h2 className="heading">Admin Login</h2>
+          <p className="text">Enter your admin credentials to access the dashboard</p>
 
           {error && <div className="error-text">{error}</div>}
 
@@ -58,12 +52,12 @@ const Login = () => {
               <label className="label">Email</label>
               <input
                 type="email"
-                placeholder="m@example.com"
+                placeholder="admin@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="input"
-                id="emailInput"
+                id="adminEmailInput"
               />
             </div>
 
@@ -75,7 +69,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="input"
-                id="pwInput"
+                id="adminPwInput"
               />
             </div>
 
@@ -84,11 +78,8 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="signup-text">
-            Don't have an account? <Link to="/register" className="link">Sign up</Link>
-          </div>
-          <div className="signup-text">
-            <Link to="/admin-login" className="link">Login as admin</Link>
+          <div className="user-login-text">
+            Not an admin? <Link to="/login" className="link">User Login</Link>
           </div>
         </div>
       </div>
@@ -96,4 +87,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

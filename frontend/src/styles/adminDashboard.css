@@ -1,0 +1,207 @@
+/* Base Styles */
+:root {
+    --primary: #2a4d9b;
+    --secondary: #3f37c9;
+    --accent: #4895ef;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --success: #4cc9f0;
+    --warning: #f72585;
+    --gray: #6c757d;
+    --light-gray: #e9ecef;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body:has(.admin-dashboard-container) {
+    background: url('../assets/adminbg.jpg') center/cover no-repeat;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark);
+  }
+  
+  /* Dashboard Container */
+  .admin-dashboard-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+  }
+  
+  /* Dashboard Card */
+  .admin-dashboard-card {
+    width: 100%;
+    max-width: 1200px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Titles and Text */
+  .dashboard-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1rem;
+  }
+  
+  .welcome-message {
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 1.5rem 0;
+  }
+  
+  /* Buttons */
+  .logout-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    color: white;
+    background-color: var(--primary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 1.5rem;
+  }
+  
+  .logout-button:hover {
+    background-color: var(--secondary);
+  }
+  
+  .delete-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: white;
+    background-color: var(--warning);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: #d41c70;
+  }
+  
+  /* Table Wrapper */
+  .table-wrapper {
+    max-height: 400px;
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+  
+  /* Table */
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #ffffff;
+    table-layout: auto;
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--light-gray);
+    min-width: 120px;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+  
+  .users-table th {
+    background-color: var(--primary);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  .users-table td {
+    background-color: transparent;
+  }
+  
+  .users-table td div {
+    max-height: 100px;
+    overflow-y: auto;
+  }
+  
+  .no-users {
+    text-align: center;
+    padding: 1rem;
+    color: #ffffff;
+  }
+  
+  /* Error and Loading Text */
+  .error-text {
+    color: #ffffff;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  
+  .loading-text {
+    color: #ffffff;
+    font-size: 1rem;
+    margin: 1rem 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .admin-dashboard-card {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+  
+    .users-table th,
+    .users-table td {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      min-width: 100px;
+    }
+  
+    .delete-button {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .users-table {
+      font-size: 0.8rem;
+    }
+  
+    .users-table th,
+    .users-table td {
+      padding: 0.4rem;
+      min-width: 80px;
+    }
+  
+    .table-wrapper {
+      max-height: 300px;
+    }
+  }
