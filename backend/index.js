@@ -12,6 +12,7 @@ const authorRoutes = require("./routes/authorRoutes");
 const publicationRoutes = require("./routes/publicationRoutes");
 const calendarRoutes = require("./routes/calendarRoutes");
 const userRoutes = require("./routes/userRoutes");
+const readingChallengeRoutes = require("./routes/readingChallengeRoutes"); // Import the reading challenge routes
 const app = express();
 
 // Middleware
@@ -38,6 +39,8 @@ app.use("/api/authors", authorRoutes);
 app.use("/api/publications", publicationRoutes);
 
 app.use("/api/calendar", calendarRoutes);
+
+app.use("/api/reading-challenges", readingChallengeRoutes); // Use the reading challenge routes
 
 // Serve Frontend (Fixes 404 on Refresh)
 const clientBuildPath = path.join(__dirname, "client", "build");

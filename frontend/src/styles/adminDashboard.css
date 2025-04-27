@@ -1,283 +1,345 @@
 /* Base Styles */
 :root {
-    --primary: #A8E6CF; /* Light green for primary */
-    --secondary: #800000; /* Maroon for secondary */
-    --gradient-start: #E0F7E9; /* Light green gradient start */
-    --gradient-end: #A8E6CF; /* Light green gradient end */
-    --light: #FFFFFF; /* White for light backgrounds */
-    --dark: #2D2D2D; /* Dark gray for text */
-    --success: #4CAF50; /* Green for success */
-    --warning: #D32F2F; /* Red for warnings */
-    --gray: #6B7280; /* Gray for secondary text */
-    --light-gray: #E5E7EB; /* Light gray for borders */
-  }
-  
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body:has(.admin-dashboard__container) {
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin: 0;
-    padding: 1.5rem;
-  }
-  
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--dark);
-    line-height: 1.5;
-  }
-  
-  /* Dashboard Container */
-  .admin-dashboard__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 1.5rem;
-  }
-  
-  /* Dashboard Header */
-  .admin-dashboard__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: var(--light);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Dashboard Card */
+  --primary: #A8E6CF; /* Light green for primary */
+  --secondary: #800000; /* Maroon for secondary */
+  --gradient-start: #E0F7E9; /* Light green gradient start */
+  --gradient-end: #A8E6CF; /* Light green gradient end */
+  --light: #FFFFFF; /* White for light backgrounds */
+  --dark: #2D2D2D; /* Dark gray for text */
+  --success: #4CAF50; /* Green for success */
+  --warning: #D32F2F; /* Red for warnings */
+  --gray: #6B7280; /* Gray for secondary text */
+  --light-gray: #E5E7EB; /* Light gray for borders */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body:has(.admin-dashboard__container) {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0;
+  padding: 1.5rem;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--dark);
+  line-height: 1.5;
+}
+
+/* Dashboard Container */
+.admin-dashboard__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Dashboard Header */
+.admin-dashboard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--light);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard Card */
+.admin-dashboard__content {
+  width: 100%;
+  max-width: 1200px;
+  background: var(--light);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.admin-dashboard__content:hover {
+  transform: translateY(-4px);
+}
+
+/* Titles and Text */
+.admin-dashboard__title {
+  font-size: clamp(1.8rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--secondary); /* Maroon */
+  margin: 0;
+}
+
+.admin-dashboard__welcome-text {
+  font-size: clamp(1.2rem, 4vw, 1.4rem);
+  color: var(--dark);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.admin-dashboard__section-title {
+  font-size: clamp(1.2rem, 4vw, 1.3rem);
+  font-weight: 600;
+  color: var(--secondary);
+  margin: 2rem 0 1rem;
+}
+
+/* Buttons */
+.admin-dashboard__logout-btn {
+  padding: 0.3rem 0.6rem; /* Smaller size */
+  font-size: 0.75rem; /* Smaller font size */
+  font-weight: 500;
+  color: var(--light);
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.admin-dashboard__logout-btn:hover {
+  background-color: #660000; /* Darker maroon */
+  transform: translateY(-2px);
+}
+
+.admin-dashboard__delete-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--light);
+  background-color: var(--warning);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.admin-dashboard__delete-btn:hover {
+  background-color: #b71c1c;
+  transform: translateY(-2px);
+}
+
+.admin-dashboard__submit-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--light);
+  background-color: var(--success);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.admin-dashboard__submit-btn:hover {
+  background-color: #388e3c;
+  transform: translateY(-2px);
+}
+
+/* Challenge Form */
+.admin-dashboard__challenge-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-dashboard__form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-dashboard__form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--dark);
+  margin-bottom: 0.25rem;
+}
+
+.admin-dashboard__form-group input {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--dark);
+  transition: border-color 0.2s ease;
+}
+
+.admin-dashboard__form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Table Wrapper */
+.admin-dashboard__table-wrapper {
+  max-height: 500px;
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 8px;
+  border: 1px solid var(--light-gray);
+}
+
+/* Table */
+.admin-dashboard__table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--dark);
+  table-layout: auto;
+}
+
+.admin-dashboard__table th,
+.admin-dashboard__table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--light-gray);
+  min-width: 120px;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.admin-dashboard__table th {
+  background-color: var(--secondary); /* Maroon */
+  color: var(--light);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  -webkit-backdrop-filter: blur(8px); /* Frosty effect */
+  backdrop-filter: blur(8px); /* Frosty effect */
+  opacity: 0.9;
+}
+
+.admin-dashboard__table td {
+  background: rgba(255, 255, 255, 0.5); /* Frosty effect */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--dark);
+}
+
+.admin-dashboard__table td div.admin-dashboard__nested-item {
+  max-height: 80px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-dashboard__table td div.admin-dashboard__nested-item span.admin-dashboard__nested-field {
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.admin-dashboard__no-users {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--gray);
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.5); /* Frosty effect */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Error and Loading Text */
+.admin-dashboard__error {
+  color: var(--warning);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  background: rgba(211, 47, 47, 0.1);
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.admin-dashboard__loading {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin: 2rem 0;
+  text-align: center;
+  animation: pulse 1.5s infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
   .admin-dashboard__content {
-    width: 100%;
-    max-width: 1200px;
-    background: var(--light);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    padding: 1.5rem;
+    margin: 1rem;
   }
-  
-  .admin-dashboard__content:hover {
-    transform: translateY(-4px);
+
+  .admin-dashboard__header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
   }
-  
-  /* Titles and Text */
-  .admin-dashboard__title {
-    font-size: clamp(1.8rem, 5vw, 2.2rem);
-    font-weight: 700;
-    color: var(--secondary); /* Maroon */
-    margin: 0;
-  }
-  
-  .admin-dashboard__welcome-text {
-    font-size: clamp(1.2rem, 4vw, 1.4rem);
-    color: var(--dark);
-    margin-bottom: 1.5rem;
-    font-weight: 500;
-  }
-  
-  .admin-dashboard__section-title {
-    font-size: clamp(1.2rem, 4vw, 1.3rem);
-    font-weight: 600;
-    color: var(--secondary);
-    margin: 2rem 0 1rem;
-  }
-  
-  /* Buttons */
-  .admin-dashboard__logout-btn {
-    padding: 0.3rem 0.6rem; /* Smaller size */
-    font-size: 0.75rem; /* Smaller font size */
-    font-weight: 500;
-    color: var(--light);
-    background-color: var(--secondary);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-  }
-  
-  .admin-dashboard__logout-btn:hover {
-    background-color: #660000; /* Darker maroon */
-    transform: translateY(-2px);
-  }
-  
-  .admin-dashboard__delete-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--light);
-    background-color: var(--warning);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-  }
-  
-  .admin-dashboard__delete-btn:hover {
-    background-color: #b71c1c;
-    transform: translateY(-2px);
-  }
-  
-  /* Table Wrapper */
-  .admin-dashboard__table-wrapper {
-    max-height: 500px;
-    overflow-x: auto;
-    overflow-y: auto;
-    border-radius: 8px;
-    border: 1px solid var(--light-gray);
-  }
-  
-  /* Table */
-  .admin-dashboard__table {
-    width: 100%;
-    border-collapse: collapse;
-    color: var(--dark);
-    table-layout: auto;
-  }
-  
+
   .admin-dashboard__table th,
   .admin-dashboard__table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--light-gray);
-    min-width: 120px;
-    max-width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-  }
-  
-  .admin-dashboard__table th {
-    background-color: var(--secondary); /* Maroon */
-    color: var(--light);
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    -webkit-backdrop-filter: blur(8px); /* Frosty effect */
-    backdrop-filter: blur(8px); /* Frosty effect */
-    opacity: 0.9;
-  }
-  
-  .admin-dashboard__table td {
-    background: rgba(255, 255, 255, 0.5); /* Frosty effect */
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    color: var(--dark);
-  }
-  
-  .admin-dashboard__table td div.admin-dashboard__nested-item {
-    max-height: 80px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  
-  .admin-dashboard__table td div.admin-dashboard__nested-item span.admin-dashboard__nested-field {
-    font-size: 0.85rem;
-    color: var(--gray);
-  }
-  
-  .admin-dashboard__no-users {
-    text-align: center;
-    padding: 1.5rem;
-    color: var(--gray);
-    font-style: italic;
-    background: rgba(255, 255, 255, 0.5); /* Frosty effect */
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-  }
-  
-  /* Error and Loading Text */
-  .admin-dashboard__error {
-    color: var(--warning);
+    padding: 0.75rem;
     font-size: 0.9rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    background: rgba(211, 47, 47, 0.1);
+    min-width: 100px;
+  }
+
+  .admin-dashboard__delete-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .admin-dashboard__challenge-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard__container {
+    padding: 1rem;
+  }
+
+  .admin-dashboard__table {
+    font-size: 0.85rem;
+  }
+
+  .admin-dashboard__table th,
+  .admin-dashboard__table td {
     padding: 0.5rem;
-    border-radius: 4px;
+    min-width: 80px;
   }
-  
-  .admin-dashboard__loading {
-    color: var(--secondary);
-    font-size: 1rem;
-    margin: 2rem 0;
-    text-align: center;
-    animation: pulse 1.5s infinite;
+
+  .admin-dashboard__table-wrapper {
+    max-height: 400px;
   }
-  
-  /* Animations */
-  @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+
+  .admin-dashboard__title {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
   }
-  
-  /* Responsive Design */
-  @media (max-width: 1024px) {
-    .admin-dashboard__content {
-      padding: 1.5rem;
-      margin: 1rem;
-    }
-  
-    .admin-dashboard__header {
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1rem;
-    }
-  
-    .admin-dashboard__table th,
-    .admin-dashboard__table td {
-      padding: 0.75rem;
-      font-size: 0.9rem;
-      min-width: 100px;
-    }
-  
-    .admin-dashboard__delete-btn {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.85rem;
-    }
+
+  .admin-dashboard__welcome-text {
+    font-size: clamp(1rem, 3vw, 1.2rem);
   }
-  
-  @media (max-width: 768px) {
-    .admin-dashboard__container {
-      padding: 1rem;
-    }
-  
-    .admin-dashboard__table {
-      font-size: 0.85rem;
-    }
-  
-    .admin-dashboard__table th,
-    .admin-dashboard__table td {
-      padding: 0.5rem;
-      min-width: 80px;
-    }
-  
-    .admin-dashboard__table-wrapper {
-      max-height: 400px;
-    }
-  
-    .admin-dashboard__title {
-      font-size: clamp(1.5rem, 4vw, 1.8rem);
-    }
-  
-    .admin-dashboard__welcome-text {
-      font-size: clamp(1rem, 3vw, 1.2rem);
-    }
+
+  .admin-dashboard__form-group input {
+    font-size: 0.85rem;
   }
+}

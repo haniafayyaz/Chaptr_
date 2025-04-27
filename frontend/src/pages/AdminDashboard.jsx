@@ -7,6 +7,13 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [challengeForm, setChallengeForm] = useState({
+    title: '',
+    startDate: '',
+    endDate: '',
+    noOfPages: '',
+  });
+  const [formError, setFormError] = useState('');
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user')) || null;
 
@@ -57,6 +64,43 @@ const AdminDashboard = () => {
     navigate('/admin-login');
   };
 
+  // Handle form input changes
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setChallengeForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle form submission for creating a reading challenge
+  const handleCreateChallenge = async (e) => {
+    e.preventDefault();
+    setFormError('');
+
+    // Basic form validation
+    if (!challengeForm.title || !challengeForm.startDate || !challengeForm.endDate || !challengeForm.noOfPages) {
+      setFormError('All fields are required.');
+      return;
+    }
+
+    if (new Date(challengeForm.endDate) <= new Date(challengeForm.startDate)) {
+      setFormError('End date must be after start date.');
+      return;
+    }
+
+    if (isNaN(challengeForm.noOfPages) || Number(challengeForm.noOfPages) <= 0) {
+      setFormError('Number of pages must be a positive number.');
+      return;
+    }
+
+    try {
+      await axios.post('http://localhost:5000/api/reading-challenges', challengeForm);
+      setChallengeForm({ title: '', startDate: '', endDate: '', noOfPages: '' });
+      alert('Reading challenge created successfully!');
+    } catch (error) {
+      console.error('Create challenge error:', error.response?.data, error.message);
+      setFormError('Failed to create reading challenge. Please try again.');
+    }
+  };
+
   // Format nested arrays/objects for display
   const formatArray = (arr, key) => {
     if (!arr || arr.length === 0) return 'None';
@@ -81,6 +125,58 @@ const AdminDashboard = () => {
       <main className="admin-dashboard__content">
         <section className="admin-dashboard__welcome">
           <h2 className="admin-dashboard__welcome-text">Welcome, {user?.username || 'Admin'}</h2>
+        </section>
+        <section className="admin-dashboard__challenges">
+          <h3 className="admin-dashboard__section-title">Create Reading Challenge</h3>
+          {formError && <div className="admin-dashboard__error">{formError}</div>}
+          <form className="admin-dashboard__challenge-form" onSubmit={handleCreateChallenge}>
+            <div className="admin-dashboard__form-group">
+              <label htmlFor="title">Challenge Title</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={challengeForm.title}
+                onChange={handleFormChange}
+                placeholder="Enter challenge title"
+              />
+            </div>
+            <div className="admin-dashboard__form-group">
+              <label htmlFor="startDate">Start Date</label>
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                value={challengeForm.startDate}
+                onChange={handleFormChange}
+              />
+            </div>
+            <div className="admin-dashboard__form-group">
+              <label htmlFor="endDate">End Date</label>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                value={challengeForm.endDate}
+                onChange={handleFormChange}
+              />
+            </div>
+            <div className="admin-dashboard__form-group">
+              <label htmlFor="noOfPages">Number of Pages</label>
+              <input
+                type="number"
+                id="noOfPages"
+                name="noOfPages"
+                value={challengeForm.noOfPages}
+                onChange={handleFormChange}
+                placeholder="Enter number of pages"
+                min="1"
+              />
+            </div>
+            <button type="submit" className="admin-dashboard__submit-btn">
+              Create Challenge
+            </button>
+          </form>
         </section>
         <section className="admin-dashboard__users">
           <h3 className="admin-dashboard__section-title">Manage Users</h3>

@@ -27,6 +27,7 @@ const Dashboard = () => {
     currentProgress: 0,
     streak: 0,
   });
+  const [challenges, setChallenges] = useState([]); // New state for challenges
   const [showModal, setShowModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [currentBook, setCurrentBook] = useState(null);
@@ -49,9 +50,9 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
-  // Replace with your Spotify access token (in a real app, fetch this securely via OAuth)
+  // Replace with your Spotify access token
   const SPOTIFY_TOKEN = 'YOUR_SPOTIFY_ACCESS_TOKEN';
-  const SPOTIFY_PLAYLIST_ID = '37i9dQZF1DXcBWIGoYBM5M'; // Example: Spotify's "Today's Top Hits"
+  const SPOTIFY_PLAYLIST_ID = '37i9dQZF1DXcBWIGoYBM5M'; // Example playlist
 
   const handleNavbarToggle = (isOpen) => {
     setIsNavbarOpen(isOpen);
@@ -63,17 +64,8 @@ const Dashboard = () => {
       spread: 100,
       origin: { y: 0.2 },
       colors: [
-        '#6ee7b7', // Mint green
-        '#3b82f6', // Blue
-        '#1e40af', // Dark blue
-        '#ffffff', // White
-        '#ff0000', // Red
-        '#ff7f00', // Orange
-        '#ffff00', // Yellow
-        '#00ff00', // Green
-        '#0000ff', // Blue
-        '#4b0082', // Indigo
-        '#8a2be2'  // Violet
+        '#6ee7b7', '#3b82f6', '#1e40af', '#ffffff', '#ff0000',
+        '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#8a2be2',
       ],
     });
   };
@@ -82,18 +74,13 @@ const Dashboard = () => {
     if (stats.goalProgress >= 100 && prevGoalProgress.current < 100 && goal.dailyPagesGoal > 0) {
       setGoalAchieved(true);
       triggerConfetti();
-      
-      const timer = setTimeout(() => {
-        setGoalAchieved(false);
-      }, 4000);
-      
+      const timer = setTimeout(() => setGoalAchieved(false), 4000);
       return () => clearTimeout(timer);
     }
-    
     prevGoalProgress.current = stats.goalProgress;
   }, [stats.goalProgress, goal.dailyPagesGoal]);
 
-  // Initialize Spotify Web Playback SDK
+  // Spotify Web Playback SDK
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
@@ -104,7 +91,7 @@ const Dashboard = () => {
       const player = new window.Spotify.Player({
         name: 'Book Dashboard Player',
         getOAuthToken: cb => { cb(SPOTIFY_TOKEN); },
-        volume: 0.5
+        volume: 0.5,
       });
 
       setPlayer(player);
@@ -237,6 +224,7 @@ const Dashboard = () => {
       }
 
       try {
+        // Fetch user profile
         const profileUrl = process.env.NODE_ENV === 'development'
           ? `http://localhost:5000/api/profile/${parsedUser.username}`
           : `/api/profile/${parsedUser.username}`;
@@ -254,6 +242,7 @@ const Dashboard = () => {
         setUser(updatedUser);
         localStorage.setItem('user', JSON.stringify(updatedUser));
 
+        // Fetch reading list
         const apiUrl =
           process.env.NODE_ENV === 'development'
             ? `http://localhost:5000/api/reading-list/get-reading-list/${parsedUser.username}`
@@ -339,6 +328,7 @@ const Dashboard = () => {
           completed: completedBooks,
         });
 
+        // Fetch goals
         const goalUrl =
           process.env.NODE_ENV === 'development'
             ? `http://localhost:5000/api/goals/${parsedUser.username}`
@@ -358,11 +348,18 @@ const Dashboard = () => {
           goalProgress:
             goalRes.data.dailyPagesGoal > 0
               ? Math.round(
-                  (goalRes.data.currentProgress / goalRes.data.dailyPagesGoal) *
-                    100
+                  (goalRes.data.currentProgress / goalRes.data.dailyPagesGoal) * 100
                 )
               : 0,
         });
+
+        // Fetch enrolled challenges
+        const challengesUrl =
+          process.env.NODE_ENV === 'development'
+            ? `http://localhost:5000/api/reading-challenges/enrolled/${parsedUser.username}`
+            : `/api/reading-challenges/enrolled/${parsedUser.username}`;
+        const challengesRes = await axios.get(challengesUrl);
+        setChallenges(challengesRes.data || []);
 
         setLoading(false);
       } catch (error) {
@@ -433,43 +430,105 @@ const Dashboard = () => {
   };
 
   const handleProgressUpdate = async () => {
-    if (!pagesInput || isNaN(pagesInput)) return;
-
+    if (!pagesInput || isNaN(pagesInput) || parseInt(pagesInput) <= 0) {
+      alert('Please enter a valid number of pages.');
+      return;
+    }
+  
+    if (!user || !user.username) {
+      alert('User not authenticated. Please log in.');
+      return;
+    }
+  
+    if (!currentBook || !currentBook.id || !currentBook.totalPages) {
+      alert('Invalid book data. Please try again.');
+      return;
+    }
+  
     const pagesNum = parseInt(pagesInput);
     const newPagesRead = Math.min(currentBook.pagesRead + pagesNum, currentBook.totalPages);
     const newProgress = currentBook.totalPages > 0 
       ? Math.round((newPagesRead / currentBook.totalPages) * 100) 
       : 0;
     const isCompleted = newProgress >= 100;
-
+  
     try {
+      // Update book progress
       const updateUrl = process.env.NODE_ENV === 'development'
         ? 'http://localhost:5000/api/reading-list/update-progress'
         : '/api/reading-list/update-progress';
-      const response = await axios.put(updateUrl, {
-        username: user.username,
-        bookId: currentBook.id,
-        pagesRead: newPagesRead,
-        status: isCompleted ? 'completed' : 'reading',
-      });
-
-      const updatedBook = response.data.updatedBook;
-
+      let bookResponse;
+      try {
+        bookResponse = await axios.put(updateUrl, {
+          username: user.username,
+          bookId: currentBook.id,
+          pagesRead: newPagesRead,
+          status: isCompleted ? 'completed' : 'reading',
+        });
+      } catch (bookError) {
+        console.error('Book update error:', bookError.response?.data || bookError.message);
+        throw new Error(`Failed to update book progress: ${bookError.response?.data?.message || bookError.message}`);
+      }
+  
+      const updatedBook = bookResponse.data.updatedBook;
+  
+      // Update daily goal progress
       let goalResponse = null;
       if (goal.dailyPagesGoal > 0) {
         const goalUrl = process.env.NODE_ENV === 'development'
           ? 'http://localhost:5000/api/goals/update-progress'
           : '/api/goals/update-progress';
-        goalResponse = await axios.put(goalUrl, {
-          username: user.username,
-          pagesRead: pagesNum,
-        });
+        try {
+          goalResponse = await axios.put(goalUrl, {
+            username: user.username,
+            pagesRead: pagesNum,
+          });
+        } catch (goalError) {
+          console.error('Goal update error:', goalError.response?.data || goalError.message);
+          throw new Error(`Failed to update goal progress: ${goalError.response?.data?.message || goalError.message}`);
+        }
       }
-
+  
+      // Update challenge progress
+      if (challenges && Array.isArray(challenges) && challenges.length > 0) {
+        const challengeUpdateUrl = process.env.NODE_ENV === 'development'
+          ? 'http://localhost:5000/api/reading-challenges/update-progress'
+          : '/api/reading-challenges/update-progress';
+  
+        for (const challenge of challenges) {
+          if (!challenge.challenge?._id || !challenge.challenge?.noOfPages) {
+            console.warn('Invalid challenge data:', challenge);
+            continue;
+          }
+          try {
+            const newChallengePagesRead = Math.min(
+              challenge.pagesRead + pagesNum,
+              challenge.challenge.noOfPages
+            );
+            const response = await axios.put(challengeUpdateUrl, {
+              username: user.username,
+              challengeId: challenge.challenge._id,
+              pagesRead: pagesNum,
+            });
+  
+            setChallenges(prev =>
+              prev.map(ch =>
+                ch.challenge._id === challenge.challenge._id
+                  ? { ...ch, pagesRead: response.data.progress.pagesRead }
+                  : ch
+              )
+            );
+          } catch (challengeError) {
+            console.error(`Challenge update error for ${challenge.challenge._id}:`, challengeError.response?.data || challengeError.message);
+          }
+        }
+      }
+  
+      // Update state
       setBooks(prev => {
         let updatedReading = prev.reading;
         let updatedCompleted = prev.completed;
-
+  
         if (isCompleted) {
           updatedReading = prev.reading.filter(book => book.id !== currentBook.id);
           updatedCompleted = [
@@ -492,9 +551,9 @@ const Dashboard = () => {
               : book
           );
         }
-
+  
         const totalPagesRead = updatedReading.reduce((total, book) => total + (book.pagesRead || 0), 0);
-
+  
         setStats(prevStats => ({
           ...prevStats,
           pagesRead: totalPagesRead,
@@ -506,7 +565,7 @@ const Dashboard = () => {
             ? prevStats.booksRead + 1 
             : prevStats.booksRead,
         }));
-
+  
         if (goalResponse) {
           setGoal({
             ...goal,
@@ -514,18 +573,18 @@ const Dashboard = () => {
             streak: goalResponse.data.streak,
           });
         }
-
+  
         return {
           ...prev,
           reading: updatedReading,
           completed: updatedCompleted,
         };
       });
-
+  
       setShowModal(false);
     } catch (error) {
-      console.error("Error updating progress:", error.response?.data || error.message);
-      alert("Failed to update progress. Please try again.");
+      console.error('Progress update error:', error.message);
+      alert(error.message || 'Failed to update progress. Please try again.');
     }
   };
 
@@ -610,7 +669,7 @@ const Dashboard = () => {
   }
 
   if (loading) {
-    return <div className="loading">Loading your books...</div>;
+    return <div className="loading">Loading your dashboard...</div>;
   }
 
   return (
@@ -631,7 +690,7 @@ const Dashboard = () => {
                   if (!isNaN(value) && value >= 1) {
                     setPagesInput(value);
                   } else if (e.target.value === "") {
-                    setPagesInput(""); // Allow clearing the input
+                    setPagesInput("");
                   }
                 }}
                 placeholder="Enter number of pages"

@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   profilePicture: { type: String, default: null },
   isAuthor: { type: Boolean, default: false },
   followers: [{ type: String, default: [] }], // Array of usernames who follow this user
+  challenges: [{ type: mongoose.Schema.Types.ObjectId, ref: "UserChallengeProgress" }], // References to challenge progress
   authorProfile: {
     type: {
       books: [
@@ -36,7 +37,4 @@ const userSchema = new mongoose.Schema({
     default: null, // Set authorProfile to null by default
   },
 });
-
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports = mongoose.models.User || mongoose.model('User', userSchema);

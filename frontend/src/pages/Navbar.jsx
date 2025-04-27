@@ -46,12 +46,12 @@ const Navbar = ({ onToggle }) => {
           >
             Book Clubs
           </Link>
-          {/* <Link
+          {<Link
             to="/challenges"
             className={`nav-link ${location.pathname === '/challenges' ? 'active' : ''}`}
           >
             Challenges
-          </Link> */}
+          </Link> }
           <Link
             to="/books"
             className={`nav-link ${location.pathname === '/books' ? 'active' : ''}`}
