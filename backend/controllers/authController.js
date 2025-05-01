@@ -20,7 +20,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, name: user.name, email: user.email, username: user.username, isAuthor: user.isAuthor },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "5m" }
     );
 
     res.status(200).json({
@@ -66,7 +66,7 @@ const register = async (req, res) => {
     const token = jwt.sign(
       { userId: newUser._id, name: newUser.name, email: newUser.email, username: newUser.username, isAuthor: newUser.isAuthor },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "5m" }
     );
 
     res.status(201).json({
@@ -101,7 +101,7 @@ const adminLogin = async (req, res) => {
     const token = jwt.sign(
       { userId: admin._id, email: admin.email, username: admin.username, role: 'admin' },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "5m" }
     );
 
     res.status(200).json({

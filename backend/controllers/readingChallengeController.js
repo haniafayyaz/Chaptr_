@@ -136,6 +136,15 @@ exports.updateChallengeProgress = async (req, res) => {
       return res.status(404).json({ message: 'Challenge not found.' });
     }
 
+    // Check if challenge is active (within start and end dates)
+    const currentDate = new Date();
+    if (currentDate < challenge.startDate) {
+      return res.status(400).json({ message: 'Challenge has not started yet.' });
+    }
+    if (currentDate > challenge.endDate) {
+      return res.status(400).json({ message: 'Challenge has already ended.' });
+    }
+
     // Find progress record
     const progress = await UserChallengeProgress.findOne({
       user: user._id,
