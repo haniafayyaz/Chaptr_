@@ -25,7 +25,7 @@ const Publications = () => {
     title: "",
     releaseDate: "",
   });
-  const [navbarOpen, setNavbarOpen] = useState(false); // Add state for navbar toggle
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
   const BASE_URL = "http://localhost:5000";
 
@@ -315,64 +315,72 @@ const Publications = () => {
     }
   };
 
+  const handleNavbarToggle = (isOpen) => {
+    setIsNavbarOpen(isOpen);
+  };
+
   if (loading) {
-    return <div className="pub-loader">Loading publications...</div>;
+    return <div className="publication-loader">Loading publications...</div>;
   }
 
   if (error) {
-    return <div className="pub-error">Error: {error}</div>;
+    return <div className="publication-error">Error: {error}</div>;
   }
 
   if (!authorProfile) {
-    return <div className="pub-error">No author profile set up.</div>;
+    return <div className="publication-error">No author profile set up.</div>;
   }
 
   return (
-    <div className={`pub-wrapper ${navbarOpen ? "navbar-open" : ""}`}>
-      <Navbar setNavbarOpen={setNavbarOpen} />
-      <div className="pub-main">
-        <div className="pub-section">
-          <div className="pub-panel">
-            <h1>My Publications</h1>
-            <div className="pub-controls">
-              <div className="pub-tabs">
+    <div className={`publication-wrapper ${isNavbarOpen ? "navbar-open" : ""}`}>
+      <header className="publication-hero-section">
+        <div className="publication-hero-content">
+          <h1>My Publications</h1>
+        </div>
+      </header>
+      <Navbar onToggle={handleNavbarToggle} />
+      <div className={`publication-content ${isNavbarOpen ? "publication-content-navbar-open" : ""}`}>
+        <div className="publication-section">
+          <div className="publication-panel">
+            <div className="publication-controls">
+              <div className="publication-tabs">
                 <button
-                  className={`pub-tab ${activeTab === "myBooks" ? "pub-tab-active" : ""}`}
+                  className={`publication-tab ${activeTab === "myBooks" ? "publication-tab-active" : ""}`}
                   onClick={() => handleTabChange("myBooks")}
                 >
                   My Books {activeTab === "myBooks" && `(${filteredItems.length})`}
                 </button>
                 <button
-                  className={`pub-tab ${activeTab === "announcements" ? "pub-tab-active" : ""}`}
+                  className={`publication-tab ${activeTab === "announcements" ? "publication-tab-active" : ""}`}
                   onClick={() => handleTabChange("announcements")}
                 >
                   Announcements
                 </button>
                 <button
-                  className={`pub-tab ${activeTab === "releaseDates" ? "pub-tab-active" : ""}`}
+                  className={`publication-tab ${activeTab === "releaseDates" ? "publication-tab-active" : ""}`}
                   onClick={() => handleTabChange("releaseDates")}
                 >
                   Release Dates
                 </button>
               </div>
-              <div className="pub-search">
+              <div className="publication-search">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={handleSearchChange}
                   placeholder={`Search ${activeTab === "myBooks" ? "books" : activeTab === "announcements" ? "announcements" : "release dates"}...`}
-                  className="pub-search-input"
+                  className="publication-search-input"
                 />
               </div>
             </div>
 
             {activeTab === "myBooks" && (
-              <div className="pub-form">
+              <div className="publication-form">
                 <h2>Add a New Book</h2>
-                {formError && <div className="pub-error">{formError}</div>}
-                {formSuccess && <div className="pub-success">{formSuccess}</div>}
+                {formError && <div className="publication-error">{formError}</div>}
+                {formSuccess && <div className="publication-success">{formSuccess}</div>}
                 <form onSubmit={handleBookSubmit}>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="name">Book Name</label>
                     <input
                       type="text"
@@ -384,7 +392,7 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="genre">Genre</label>
                     <input
                       type="text"
@@ -396,7 +404,7 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="coverImage">Cover Image (JPEG/JPG/PNG)</label>
                     <input
                       type="file"
@@ -407,7 +415,7 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="bookPdf">Book PDF</label>
                     <input
                       type="file"
@@ -418,11 +426,11 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-buttons">
-                    <button type="submit" className="pub-submit-btn">
+                  <div className="publication-form-buttons">
+                    <button type="submit" className="publication-submit-btn">
                       Upload Book
                     </button>
-                    <button type="button" onClick={resetBookForm} className="pub-reset-btn">
+                    <button type="button" onClick={resetBookForm} className="publication-reset-btn">
                       Reset Form
                     </button>
                   </div>
@@ -431,12 +439,12 @@ const Publications = () => {
             )}
 
             {activeTab === "announcements" && (
-              <div className="pub-form">
+              <div className="publication-form">
                 <h2>Post an Announcement</h2>
-                {formError && <div className="pub-error">{formError}</div>}
-                {formSuccess && <div className="pub-success">{formSuccess}</div>}
+                {formError && <div className="publication-error">{formError}</div>}
+                {formSuccess && <div className="publication-success">{formSuccess}</div>}
                 <form onSubmit={handleAnnouncementSubmit}>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="title">Announcement Title</label>
                     <input
                       type="text"
@@ -448,7 +456,7 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="content">Content</label>
                     <textarea
                       id="content"
@@ -459,11 +467,11 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-buttons">
-                    <button type="submit" className="pub-submit-btn">
+                  <div className="publication-form-buttons">
+                    <button type="submit" className="publication-submit-btn">
                       Post Announcement
                     </button>
-                    <button type="button" onClick={resetAnnouncementForm} className="pub-reset-btn">
+                    <button type="button" onClick={resetAnnouncementForm} className="publication-reset-btn">
                       Reset Form
                     </button>
                   </div>
@@ -472,12 +480,12 @@ const Publications = () => {
             )}
 
             {activeTab === "releaseDates" && (
-              <div className="pub-form">
+              <div className="publication-form">
                 <h2>Add a Release Date</h2>
-                {formError && <div className="pub-error">{formError}</div>}
-                {formSuccess && <div className="pub-success">{formSuccess}</div>}
+                {formError && <div className="publication-error">{formError}</div>}
+                {formSuccess && <div className="publication-success">{formSuccess}</div>}
                 <form onSubmit={handleReleaseSubmit}>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="title">Book Title</label>
                     <input
                       type="text"
@@ -489,7 +497,7 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-group">
+                  <div className="publication-form-group">
                     <label htmlFor="releaseDate">Release Date</label>
                     <input
                       type="date"
@@ -501,11 +509,11 @@ const Publications = () => {
                       required
                     />
                   </div>
-                  <div className="pub-form-buttons">
-                    <button type="submit" className="pub-submit-btn">
+                  <div className="publication-form-buttons">
+                    <button type="submit" className="publication-submit-btn">
                       Add Release Date
                     </button>
-                    <button type="button" onClick={resetReleaseForm} className="pub-reset-btn">
+                    <button type="button" onClick={resetReleaseForm} className="publication-reset-btn">
                       Reset Form
                     </button>
                   </div>
@@ -514,40 +522,40 @@ const Publications = () => {
             )}
 
             {filteredItems.length === 0 ? (
-              <p className="pub-no-items">
+              <p className="publication-no-items">
                 No {activeTab === "myBooks" ? "books" : activeTab === "announcements" ? "announcements" : "release dates"} found.
               </p>
             ) : (
-              <div className="pub-grid">
+              <div className="publication-grid">
                 {filteredItems.map((item) => (
-                  <div key={`${item.name || item.title}-${item.releaseDate || item.date || item.bookPdf}`} className="pub-card">
+                  <div key={`${item.name || item.title}-${item.releaseDate || item.date || item.bookPdf}`} className="publication-card">
                     {activeTab === "myBooks" && (
                       <>
-                        <h2 className="pub-card-title">{item.name}</h2>
-                        <p className="pub-card-genre">Genre: {item.genre}</p>
-                        <div className="pub-card-image-container">
+                        <h2 className="publication-card-title">{item.name}</h2>
+                        <p className="publication-card-genre">Genre: {item.genre}</p>
+                        <div className="publication-card-image-container">
                           {item.coverImage ? (
                             <img
                               src={`${BASE_URL}${item.coverImage}`}
                               alt={`${item.name} cover`}
-                              className="pub-card-image"
+                              className="publication-card-image"
                             />
                           ) : (
-                            <div className="pub-card-image-placeholder">No Image</div>
+                            <div className="publication-card-image-placeholder">No Image</div>
                           )}
                         </div>
-                        <div className="pub-card-actions">
+                        <div className="publication-card-actions">
                           <a
                             href={`${BASE_URL}${item.bookPdf}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="pub-card-link"
+                            className="publication-card-link"
                           >
                             View PDF
                           </a>
                           <button
                             onClick={() => handleBookRemove(item.name)}
-                            className="pub-remove-btn"
+                            className="publication-remove-btn"
                           >
                             Remove Book
                           </button>
@@ -556,17 +564,17 @@ const Publications = () => {
                     )}
                     {activeTab === "announcements" && (
                       <>
-                        <h2 className="pub-card-title">{item.title}</h2>
-                        <p className="pub-card-content">{item.content}</p>
-                        <p className="pub-card-date">
+                        <h2 className="publication-card-title">{item.title}</h2>
+                        <p className="publication-card-content">{item.content}</p>
+                        <p className="publication-card-date">
                           Posted: {item.date ? new Date(item.date).toLocaleDateString() : "N/A"}
                         </p>
                       </>
                     )}
                     {activeTab === "releaseDates" && (
                       <>
-                        <h2 className="pub-card-title">{item.title}</h2>
-                        <p className="pub-card-date">
+                        <h2 className="publication-card-title">{item.title}</h2>
+                        <p className="publication-card-date">
                           Release Date: {item.releaseDate ? new Date(item.releaseDate).toLocaleDateString() : "N/A"}
                         </p>
                       </>
@@ -578,6 +586,9 @@ const Publications = () => {
           </div>
         </div>
       </div>
+      <footer className="publication-footer">
+        <p>© {new Date().getFullYear()} Authors Platform. All rights reserved.</p>
+      </footer>
     </div>
   );
 };

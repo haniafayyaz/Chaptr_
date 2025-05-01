@@ -1,26 +1,24 @@
-/* bookdetails.css - Enhanced to match app vibe with frosted glass, gradients, and readable text */
+/* bookDetails.css - Updated for white background with dark text, black review text, and comment label */
 
-/* Import font and define variables to match books.css and publications.css */
+/* Import font and define variables */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #3b82f6; /* Softer blue */
-  --secondary-color: #1e40af; /* Deeper blue for gradients */
-  --accent-color: #6ee7b7; /* Fresh green accent */
-  --background-dark: #1e2a44; /* Lighter dark background */
-  --background-light: #f0f4f8;
-  --text-dark: #1f2937; /* Dark gray for readability */
-  --text-light: #1f2937; /* Changed to dark for readability */
-  --card-bg: rgba(255, 255, 255, 0.1);
-  --card-border: rgba(255, 255, 255, 0.15);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  --border-radius: 12px;
+  --primary-color: #3b82f6;
+  --secondary-color: #1e40af;
+  --accent-color: #6ee7b7;
+  --text-dark: #1a1a1a; /* Dark gray for text */
+  --text-muted: #4a5568; /* Slightly lighter gray */
+  --border-color: #e2e8f0; /* Light border color */
+  --card-bg: #ffffff; /* White card background */
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
 }
 
 .details-wrapper {
   display: flex;
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: #ffffff;
   transition: margin-left 0.3s ease;
 }
 
@@ -31,8 +29,7 @@
 .book-details-page {
   flex: 1;
   padding: 2rem;
-  background: url('../assets/discoverbg.jpeg') center/cover no-repeat;
-  background-attachment: fixed;
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -41,16 +38,16 @@
 .book-details-container {
   max-width: 900px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.1); /* Frosted glass effect */
-  border-radius: 16px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   padding: 2rem;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--border-color);
   font-family: 'Inter', sans-serif;
+  color: var(--text-dark);
 }
 
+/* Buttons */
 .back-button,
 .add-button,
 .reset-button {
@@ -60,35 +57,30 @@
   color: #ffffff;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow);
   margin: 0.5rem 0;
 }
 
 .reset-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: #f7fafc;
+  color: var(--text-dark);
+  border: 1px solid var(--border-color);
 }
 
 .back-button:hover,
-.add-button:hover,
-.reset-button:hover {
+.add-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.back-button {
-  margin-bottom: 1rem;
+.reset-button:hover {
+  background: #edf2f7;
 }
 
-.add-button {
-  margin-top: 1rem;
-}
-
+/* Book Content */
 .book-details-content {
   display: flex;
   gap: 2rem;
@@ -96,77 +88,55 @@
 }
 
 .book-details-cover {
-  flex: 0 0 220px; /* Slightly larger for better visibility */
-  border-radius: 10px;
+  flex: 0 0 220px;
+  border-radius: var(--border-radius);
   overflow: hidden;
-  border: 4px solid;
-  border-image: linear-gradient(45deg, var(--primary-color), var(--accent-color)) 1;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
   transition: all 0.3s ease;
 }
 
 .book-details-cover:hover {
   transform: translateY(-5px);
-  border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color)) 1;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes borderGlow {
-  0% {
-    border-image: linear-gradient(45deg, var(--primary-color), var(--accent-color)) 1;
-  }
-  50% {
-    border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color)) 1;
-  }
-  100% {
-    border-image: linear-gradient(45deg, var(--primary-color), var(--accent-color)) 1;
-  }
-}
-
-.book-details-cover {
-  animation: borderGlow 3s infinite ease-in-out;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .book-details-cover-image {
   width: 100%;
   height: 320px;
   object-fit: contain;
-  background: #f0e6d2;
+  background: #f8f9fa;
   padding: 0.5rem;
 }
 
 .book-details-cover-placeholder {
   width: 100%;
   height: 320px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #f8f9fa;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
   font-size: 1rem;
   text-align: center;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
 }
 
 .book-details-info {
   flex: 1;
-  color: #ffffff;
+  color: var(--text-dark);
 }
 
 .book-details-title {
   font-size: 2.2rem;
   font-weight: 700;
   margin: 0 0 0.75rem;
-  background: linear-gradient(to right, #ffffff, var(--accent-color));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-dark);
 }
 
 .book-details-author {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-muted);
   margin: 0 0 0.75rem;
 }
 
@@ -179,7 +149,7 @@
 }
 
 .book-details-rating .stars {
-  color: #f5c518; /* Gold for filled stars */
+  color: #f5c518;
   font-size: 1.4rem;
 }
 
@@ -187,55 +157,37 @@
 .book-details-pages,
 .book-details-summary {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-dark);
   margin: 0 0 0.75rem;
 }
 
 .book-details-genre strong,
 .book-details-pages strong,
 .book-details-summary strong {
-  color: #ffffff;
+  color: var(--text-dark);
   font-weight: 600;
-}
-
-.loading {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
-  margin-top: 5rem;
-}
-
-.error {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #ff6b6b;
-  margin-top: 5rem;
 }
 
 /* Review Form */
 .review-form-container {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #f8f9fa;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
 }
 
 .review-form-container h2 {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #ffffff;
+  color: black !important;
   margin-bottom: 1rem;
   text-align: center;
 }
 
 .review-message {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: black !important;
   text-align: center;
 }
 
@@ -247,29 +199,30 @@
   display: block;
   font-size: 1rem;
   font-weight: 500;
-  color: #ffffff;
+  color: black !important;
   margin-bottom: 0.5rem;
+}
+
+.comment-label {
+  color: #000000 !important; /* Explicitly black for Comment (optional) */
 }
 
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: #ffffff;
+  color: black !important;
   outline: none;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
   resize: vertical;
   transition: all 0.3s ease;
 }
 
 .form-group textarea:focus {
   border-color: var(--primary-color);
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .star-rating {
@@ -279,41 +232,33 @@
 }
 
 .star {
-  color: rgba(255, 255, 255, 0.3); /* Dim for empty stars */
+  color: #8fa8c9;
   margin: 0 0.2rem;
   transition: color 0.2s;
 }
 
 .star.filled {
-  color: #f5c518; /* Gold for filled stars */
+  color: #f5c518;
 }
 
 .star:hover,
 .star.filled:hover {
-  color: #e0a800; /* Hover effect */
-}
-
-.form-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
+  color: #e0a800;
 }
 
 /* Reviews List */
 .reviews-container {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #f8f9fa;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
 }
 
 .reviews-container h2 {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #ffffff;
+  color: black !important;
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -325,107 +270,64 @@
 
 .review-item {
   padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--border-color);
+  color: #000000; /* Black text for reviews */
 }
 
 .review-item:last-child {
   border-bottom: none;
 }
 
-.review-header {
+.book-review-header {
   font-size: 1.1rem;
   margin: 0.5rem 0;
+  color: #000000; /* Black text */
 }
 
-.review-header strong {
-  color: #ffffff;
+.book-review-header strong {
+  color: #000000; /* Black username */
 }
 
 .review-stars {
   font-size: 1.2rem;
-}
-
-.review-stars::before {
-  /* This ensures filled stars (★) are yellow */
-  content: attr(data-filled);
-  color: #f5c518; /* Gold for filled stars */
+  color: #f5c518; /* Keep star color yellow */
 }
 
 .empty-stars {
-  color: rgba(255, 255, 255, 0.3); /* Dim for empty stars */
+  color: #e2e8f0; /* Keep empty stars gray */
 }
 
-.review-comment {
+.book-review-comment {
   font-size: 1rem;
   margin: 0.5rem 0;
+  color: #000000; /* Black comment text */
 }
 
-.review-date {
+.book-review-date {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0.5rem 0;
+  color: #000000; /* Black date text */
 }
 
 .no-reviews {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-muted);
   text-align: center;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .details-wrapper.navbar-open {
-    margin-left: 0;
-  }
-
-  .book-details-page {
-    padding: 1rem;
-  }
-
-  .book-details-container {
-    padding: 1.5rem;
-  }
-
   .book-details-content {
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
   }
 
   .book-details-cover {
     flex: 0 0 180px;
   }
 
-  .book-details-cover-image,
-  .book-details-cover-placeholder {
-    height: 260px;
-  }
-
   .book-details-title {
     font-size: 1.8rem;
     text-align: center;
-  }
-
-  .book-details-author,
-  .book-details-genre,
-  .book-details-pages,
-  .book-details-summary {
-    text-align: center;
-  }
-
-  .book-details-rating {
-    justify-content: center;
-  }
-
-  .add-button {
-    display: block;
-    margin: 1rem auto;
-  }
-
-  .review-form-container h2,
-  .reviews-container h2 {
-    font-size: 1.5rem;
   }
 }
 
@@ -434,30 +336,7 @@
     flex: 0 0 150px;
   }
 
-  .book-details-cover-image,
-  .book-details-cover-placeholder {
-    height: 220px;
-  }
-
   .book-details-title {
     font-size: 1.6rem;
-  }
-
-  .book-details-author,
-  .book-details-genre,
-  .book-details-pages,
-  .book-details-summary {
-    font-size: 1rem;
-  }
-
-  .back-button,
-  .add-button,
-  .reset-button {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .star-rating {
-    font-size: 1.5rem;
   }
 }

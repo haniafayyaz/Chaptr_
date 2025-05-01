@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-image: url('/src/assets/discoverbg.jpeg');
+  background-image: white;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

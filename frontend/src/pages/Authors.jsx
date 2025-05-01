@@ -176,7 +176,7 @@ const Authors = () => {
   };
 
   const handleNavbarToggle = (isOpen) => {
-    console.log("Navbar toggle - isOpen:", isOpen); // Debug state change
+    console.log("Navbar toggle - isOpen:", isOpen);
     setIsNavbarOpen(isOpen);
   };
 
@@ -201,11 +201,15 @@ const Authors = () => {
 
   return (
     <div className={`author-wrapper ${isNavbarOpen ? 'navbar-open' : ''}`}>
+      <header className="authors-hero-section">
+        <div className="authors-hero-content">
+          <h1>Authors</h1>
+        </div>
+      </header>
       <Navbar onToggle={handleNavbarToggle} />
       <div className={`author-content ${isNavbarOpen ? "author-content-navbar-open" : ""}`}>
         <div className="author-section">
           <div className="author-panel">
-            <h1 className="author-title">Authors</h1>
             <div className="author-controls">
               <div className="author-tabs">
                 <button
@@ -351,6 +355,9 @@ const Authors = () => {
           </div>
         </div>
       </div>
+      <footer className="authors-footer">
+        <p>© {new Date().getFullYear()} Authors Platform. All rights reserved.</p>
+      </footer>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const Clubs = () => {
   });
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(null);
-  const [navbarOpen, setNavbarOpen] = useState(false); // State for navbar toggle
+  const [navbarOpen, setNavbarOpen] = useState(false);
 
   const navigate = useNavigate();
   const BASE_URL = "http://localhost:5000";
@@ -31,7 +31,6 @@ const Clubs = () => {
           throw new Error("Failed to fetch clubs");
         }
         const data = await response.json();
-        console.log("Fetched clubs:", data);
         setClubs(data);
         setFilteredClubs(data);
         setLoading(false);
@@ -174,8 +173,6 @@ const Clubs = () => {
       });
 
       const text = await response.text();
-      console.log("Raw response:", text);
-
       if (!response.ok) {
         try {
           const errorData = JSON.parse(text);
@@ -203,7 +200,6 @@ const Clubs = () => {
   };
 
   const handleNavbarToggle = (isOpen) => {
-    console.log("Navbar toggle - isOpen:", isOpen); // Debug state change
     setNavbarOpen(isOpen);
   };
 
@@ -228,12 +224,15 @@ const Clubs = () => {
 
   return (
     <div className={`dash-wrapper ${navbarOpen ? "navbar-open" : ""}`}>
-      <Navbar onToggle={handleNavbarToggle} /> {/* Updated prop name to onToggle */}
-
+      <header className="bookclub-hero-section">
+        <div className="bookclub-hero-content">
+          <h1>Book Club</h1>
+        </div>
+      </header>
+      <Navbar onToggle={handleNavbarToggle} />
       <div className="primary-content">
         <div className="clubs-wrapper">
           <div className="clubs-content">
-            <h1>Book Clubs</h1>
             <div className="clubs-header-wrapper">
               <div className="clubs-header">
                 <div className="tabs">
@@ -274,9 +273,11 @@ const Clubs = () => {
                 <h2>Create a New Book Club</h2>
                 {formError && <div className="error-message">{formError}</div>}
                 {formSuccess && <div className="success-message">{formSuccess}</div>}
-                <form onSubmit={handleFormSubmit}>
+                <form className="create-club-form-element" onSubmit={handleFormSubmit}>
                   <div className="form-group">
-                    <label htmlFor="name">Club Name</label>
+                    <label htmlFor="name" className="create-club-form-label">
+                      Club Name
+                    </label>
                     <input
                       type="text"
                       id="name"
@@ -284,22 +285,28 @@ const Clubs = () => {
                       value={formData.name}
                       onChange={handleFormChange}
                       placeholder="Enter club name"
+                      className="create-club-form-input"
                       required
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="description">Description</label>
+                    <label htmlFor="description" className="create-club-form-label">
+                      Description
+                    </label>
                     <textarea
                       id="description"
                       name="description"
                       value={formData.description}
                       onChange={handleFormChange}
                       placeholder="Describe your book club"
+                      className="create-club-form-textarea"
                       required
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="tags">Tags (comma-separated)</label>
+                    <label htmlFor="tags" className="create-club-form-label">
+                      Tags <span className="label-subtext">(comma-separated)</span>
+                    </label>
                     <input
                       type="text"
                       id="tags"
@@ -307,16 +314,20 @@ const Clubs = () => {
                       value={formData.tags}
                       onChange={handleFormChange}
                       placeholder="e.g., fiction, fantasy, classics"
+                      className="create-club-form-input"
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="coverImage">Cover Image (required)</label>
+                    <label htmlFor="coverImage" className="create-club-form-label">
+                      Cover Image <span className="label-subtext">(required)</span>
+                    </label>
                     <input
                       type="file"
                       id="coverImage"
                       name="coverImage"
                       accept="image/jpeg,image/jpg,image/png"
                       onChange={handleFormChange}
+                      className="create-club-form-input"
                       required
                     />
                   </div>
@@ -368,6 +379,12 @@ const Clubs = () => {
           </div>
         </div>
       </div>
+      <footer className="bookclub-footer">
+        <div className="bookclub-footer-content">
+          <p>© 2025 Book Club. All rights reserved.</p>
+          <p>Contact us: <a href="mailto:support@bookclub.com">support@bookclub.com</a></p>
+        </div>
+      </footer>
     </div>
   );
 };

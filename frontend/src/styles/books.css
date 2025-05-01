@@ -1,14 +1,14 @@
-/* Updated books.css with navbar-responsive behavior, readability improvements, app vibe alignment, and frosted search bar */
+/* Updated books.css with navbar-responsive behavior, readability improvements, app vibe alignment, frosted search bar, hero section, and black card border */
 
 /* Import font and define variables to match dashboard.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* Base Styles */
 :root {
-  --primary-color: #3b82f6; /* Softer blue */
-  --secondary-color: #1e40af; /* Deeper blue for gradients */
-  --accent-color: #1c8c5f; /* Fresh green accent */
-  --background-dark: #1e2a44; /* Lighter dark background */
+  --primary-color-b: #181818; /* Softer blue */
+  --secondary-color-b: #000000; /* Deeper blue for gradients */
+  --accent-color-b: #0b0b0b; /* Fresh green accent */
+  --background-dark: #121313; /* Lighter dark background */
   --background-light: #f0f4f8;
   --text-dark: #1f2937; /* Dark gray for readability */
   --text-light: #1f2937; /* Changed to dark for readability */
@@ -16,6 +16,41 @@
   --card-border: rgba(255, 255, 255, 0.15);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   --border-radius: 12px;
+  --primary-color-c: #212923; /* Added for hero section */
+  --secondary-color-c: #cae0c7; /* Added for hero section */
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-color-c), var(--secondary-color-c));
+  color: white;
+  text-align: center;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.hero-content-b {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 700px;
+  max-height: 200px;
+}
+
+.hero-content-b h1 {
+  padding-top: 40px;
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+  color: white;
+}
+
+.hero-content-b p {
+  font-size: 1.1rem;
+  margin-bottom: 1.25rem;
 }
 
 .dash-wrapper {
@@ -33,7 +68,7 @@
 .primary-content-discover {
   flex: 1;
   padding: 30px;
-  background: url('../assets/discoverbg.jpeg') center/cover no-repeat;
+  background: white;
   background-attachment: fixed;
   transition: padding 0.3s ease;
 }
@@ -70,8 +105,7 @@
   position: relative;
   z-index: 1;
   height: 380px;
-  border: 6px solid; /* Thick border like dashboard */
-  border-image: linear-gradient(45deg, var(--primary-color), var(--accent-color)) 1;
+  border: 6px solid black; /* Changed to solid black border */
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
@@ -80,18 +114,18 @@
   transform: translateY(-5px) rotate(1deg);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3),
               0 0 15px rgba(255, 215, 0, 0.6);
-  border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color)) 1; /* Reverse gradient on hover */
+  border: 6px solid black; /* Maintain black border on hover */
 }
 
 @keyframes borderGlow {
   0% {
-    border-image: linear-gradient(45deg, var(--primary-color), var(--accent-color)) 1;
+    border-image: linear-gradient(45deg, var(--primary-color-b), var(--accent-color-b)) 1;
   }
   50% {
-    border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color)) 1;
+    border-image: linear-gradient(45deg, var(--accent-color-b), var(--primary-color-b)) 1;
   }
   100% {
-    border-image: linear-gradient(45deg, var(--primary-color), var(--accent-color)) 1;
+    border-image: linear-gradient(45deg, var(--primary-color-b), var(--accent-color-b)) 1;
   }
 }
 
@@ -129,12 +163,25 @@
   padding: 5px;
 }
 
+.book-image-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0e6d2;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
 .book-info {
   padding: 15px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: rgba(167, 203, 180, 0.95); /* Slightly more opaque for better contrast */
+  background: rgba(130, 143, 139, 0.95); /* Slightly more opaque for better contrast */
   align-items: center;
   border-top: 1px solid #e0d5c0;
 }
@@ -142,6 +189,7 @@
 .book-name {
   font-size: 17px;
   font-weight: 600;
+  font-family: 'Inter', sans-serif;
   color: #f0f7f4;
   margin: 0 0 8px;
   line-height: 1.4;
@@ -178,7 +226,7 @@
 }
 
 .book-info-btn {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Match dashboard button style */
+  background: black; /* Match dashboard button style */
   color: white;
   border: none;
   padding: 8px 15px;
@@ -220,12 +268,10 @@
   gap: 15px;
   margin-bottom: 40px;
   align-items: center;
-  background: rgba(255, 255, 255, 0.15); /* Slightly more opaque for frosted glass effect */
+  background: rgba(35, 34, 34, 0.15); /* Slightly more opaque for frosted glass effect */
   padding: 15px 20px;
   border-radius: 20px; /* More rounded edges */
   box-shadow: var(--shadow);
-  -webkit-backdrop-filter: blur(12px); /* Increased blur for frosted effect */
-  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for frosted look */
   max-width: 800px;
   margin-left: auto;
@@ -248,7 +294,7 @@
 }
 
 .filter-dropdown:focus {
-  border-color: var(--accent-color);
+  border-color: var(--accent-color-b);
   outline: none;
 }
 
@@ -271,7 +317,7 @@
 }
 
 .search-input:focus {
-  border-color: var(--accent-color);
+  border-color: var(--accent-color-b);
   outline: none;
 }
 

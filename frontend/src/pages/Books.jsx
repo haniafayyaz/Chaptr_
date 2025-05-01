@@ -90,8 +90,13 @@ const Books = () => {
       <Navbar onToggle={handleNavbarToggle} />
       <div className="primary-content-discover">
         <div className="books-wrapper">
+        <section className="hero-section">
+            <div className="hero-content-b">
+              <h1>Discover Books</h1>
+              <p>Explore our collection of books!</p>
+            </div>
+          </section>
           <div className="books-content">
-            <h1>Discover Books</h1>
             <div className="search-bar">
               <select
                 value={filterOption}

@@ -2,9 +2,9 @@
 
 /* Base Styles */
 :root {
-  --primary-color: #3b82f6; /* Softer blue */
-  --secondary-color: #1e40af; /* Deeper blue for gradients */
-  --accent-color: #414b47; /* Fresh green accent */
+  --primary-color: #181819; /* Softer blue */
+  --secondary-color: #151516; /* Deeper blue for gradients */
+  --accent-color: #121312; /* Fresh green accent */
   --background-dark: #1e2a44; /* Lighter dark background */
   --background-light: #f0f4f8;
   --text-dark: #1f2937; /* Dark gray for readability */
@@ -43,10 +43,11 @@ body {
 .primary-content {
   flex: 1;
   padding: 30px;
-  background: url('../assets/discoverbg.jpeg') center/cover no-repeat;
+  background: white;
   background-attachment: fixed;
   transition: padding 0.3s ease;
   z-index: 2; /* Ensure content is above background */
+
 }
 
 /* Loading State */
@@ -90,7 +91,7 @@ body {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  background: linear-gradient(to right, #ffffff, var(--accent-color));
+  background: white;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -194,7 +195,7 @@ body {
   gap: 0.5rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 6px solid;
-  border-image: linear-gradient(45deg, var(--primary-color), var(--accent-color)) 1;
+  border-image: black;
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;

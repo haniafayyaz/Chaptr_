@@ -97,9 +97,10 @@ body {
 }
 
 /* Buttons */
+/* Logout Button - Modified */
 .admin-dashboard__logout-btn {
-  padding: 0.3rem 0.6rem; /* Smaller size */
-  font-size: 0.75rem; /* Smaller font size */
+  padding: 0.5rem 0.75rem; /* Adjusted padding */
+  font-size: 0.8rem; /* Slightly larger than before */
   font-weight: 500;
   color: var(--light);
   background-color: var(--secondary);
@@ -107,10 +108,14 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-left: auto; /* Pushes button to the right */
+  white-space: nowrap; /* Prevents text wrapping */
+  width: auto; /* Ensures button doesn't stretch */
+  min-width: 80px; /* Minimum width for better appearance */
 }
 
 .admin-dashboard__logout-btn:hover {
-  background-color: #660000; /* Darker maroon */
+  background-color: #660000;
   transform: translateY(-2px);
 }
 

@@ -17,7 +17,7 @@
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-image: url('/src/assets/discoverbg.jpeg');
+  background-image: white;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -199,7 +199,7 @@ body {
 
 .cal-day-releases {
   font-size: 0.75rem;
-  color: #9ca3af; /* Grey text */
+  color:black !important; /* Grey text */
   flex-grow: 1;
   overflow: hidden;
 }
@@ -210,12 +210,12 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 2px;
-  color: #9ca3af; /* Grey text */
+  color: black !important; /* Grey text */
 }
 
 .cal-day-more {
   font-size: 0.7rem;
-  color: #d1d5db; /* Lighter grey text */
+  color: rgb(58, 57, 57); /* Lighter grey text */
 }
 
 .cal-day-selected .cal-day-number,
@@ -248,7 +248,7 @@ body {
 .cal-release-item {
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--border-light);
-  color: var(--text-muted);
+  color: black !important;
 }
 
 /* Responsive Design */

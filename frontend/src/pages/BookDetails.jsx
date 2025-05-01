@@ -22,6 +22,7 @@ const BookDetails = () => {
         const response = await fetch(`http://localhost:5000/api/books/${id}`);
         if (!response.ok) throw new Error('Failed to fetch book details');
         const data = await response.json();
+        console.log("Book coverImage:", data.coverImage); // Log coverImage for debugging
         setBook(data);
       } catch (err) {
         setError(err.message);
@@ -182,7 +183,7 @@ const BookDetails = () => {
                     </div>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="comment">Comment (optional):</label>
+                    <label htmlFor="comment" className="comment-label">Comment (optional):</label>
                     <textarea
                       id="comment"
                       name="comment"
@@ -210,15 +211,15 @@ const BookDetails = () => {
               <ul className="reviews-listed">
                 {book.reviews.map((review, index) => (
                   <li key={index} className="review-item">
-                    <p className="review-header">
+                    <p className="book-review-header">
                       <strong>{review.reviewerName}</strong> rated it{' '}
                       <span className="review-stars">
                         {'★'.repeat(review.rating)}
                         <span className="empty-stars">{'☆'.repeat(5 - review.rating)}</span>
                       </span>
                     </p>
-                    {review.comment && <p className="review-comment">{review.comment}</p>}
-                    <p className="review-date">{new Date(review.date).toLocaleDateString()}</p>
+                    {review.comment && <p className="book-review-comment">{review.comment}</p>}
+                    <p className="book-review-date">{new Date(review.date).toLocaleDateString()}</p>
                   </li>
                 ))}
               </ul>
