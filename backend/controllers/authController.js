@@ -32,8 +32,6 @@ const validateLogin = [
   body("email")
     .notEmpty()
     .withMessage("Email is required")
-    .custom((value) => validateEmail(value))
-    .withMessage("Invalid email format or too long")
     .normalizeEmail()
     .customSanitizer((value) => sanitizeHtml(value)),
   body("password")
@@ -77,8 +75,6 @@ const validateAdminLogin = [
   body("email")
     .notEmpty()
     .withMessage("Email is required")
-    .custom((value) => validateEmail(value))
-    .withMessage("Invalid email format or too long")
     .normalizeEmail()
     .customSanitizer((value) => sanitizeHtml(value)),
   body("password")
@@ -95,12 +91,12 @@ const setAuthCookies = (res, token, userId) => {
     maxAge: 3600 * 1000, // 1 hour in milliseconds
   });
 
-  // Session cookie 
+  // Session cookie (2 minutes)
   res.cookie("session", userId, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    maxAge: 60 * 60 * 1000, 
+    maxAge: 120 * 1000, // 2 minutes in milliseconds
   });
 };
 
