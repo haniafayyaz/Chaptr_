@@ -114,6 +114,9 @@ const AdminDashboard = () => {
     ));
   };
 
+  // Get today's date in YYYY-MM-DD format for min attribute
+  const today = new Date().toISOString().split('T')[0];
+
   return (
     <div className="admin-dashboard__container">
       <header className="admin-dashboard__header">
@@ -149,6 +152,7 @@ const AdminDashboard = () => {
                 name="startDate"
                 value={challengeForm.startDate}
                 onChange={handleFormChange}
+                min={today}
               />
             </div>
             <div className="admin-dashboard__form-group">
@@ -159,6 +163,7 @@ const AdminDashboard = () => {
                 name="endDate"
                 value={challengeForm.endDate}
                 onChange={handleFormChange}
+                min={today}
               />
             </div>
             <div className="admin-dashboard__form-group">
@@ -194,8 +199,8 @@ const AdminDashboard = () => {
                     <th>Bio</th>
                     <th>Author</th>
                     <th>Followers</th>
-                    <th>Books</th>
-                    <th>Book Details</th>
+                    <th>Upcoming Releases</th>
+                    <th>Published Books</th>
                     <th>Announcements</th>
                     <th>Actions</th>
                   </tr>

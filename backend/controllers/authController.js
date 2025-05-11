@@ -131,7 +131,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, name: user.name, email: user.email, username: user.username, isAuthor: user.isAuthor, role: user.isAuthor ? "author" : "user" },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "5m" }
     );
 
     setAuthCookies(res, token, user._id.toString());
@@ -198,7 +198,7 @@ const register = async (req, res) => {
     const token = jwt.sign(
       { userId: newUser._id, name: newUser.name, email: newUser.email, username: newUser.username, isAuthor: newUser.isAuthor, role: isAuthor ? "author" : "user" },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "5m" }
     );
 
     setAuthCookies(res, token, newUser._id.toString());
@@ -253,7 +253,7 @@ const adminLogin = async (req, res) => {
     const token = jwt.sign(
       { userId: admin._id, email: admin.email, username: admin.username, role: "admin" },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "5m" }
     );
 
     setAuthCookies(res, token, admin._id.toString());
